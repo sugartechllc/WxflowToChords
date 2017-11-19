@@ -4,8 +4,10 @@
 JSONtoCHORDS is a python module for converting json formatted datagrams into the CHORDS Rest api, 
 and submitting the data to a CHORDS portal.
 
-## Configuration
-JSON
+## JSON Input Schema
+Input data is structured according to the Weatherflow 
+[UDP api](https://weatherflow.github.io/SmartWeather/api/udp.html).
+For example:
 
 ```
 {
@@ -17,6 +19,8 @@ JSON
 }
 ```
 
+## Configuration
+A JSON structure defines the mapping between the input data and the CHORDS portal api.
 
 ```
 "chords_host": "chords_host.com",
