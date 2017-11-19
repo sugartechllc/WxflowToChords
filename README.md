@@ -8,7 +8,7 @@ REST api, and submitting the data to a [CHORDS portal](http://chordsrt.com).
 Input data is structured according to the Weatherflow 
 [UDP api](https://weatherflow.github.io/SmartWeather/api/udp.html).
 Messages have  a`type` field identifying the type of message,
-status fields indicating hardware health, 
+status fields indicating identity and hardware health, 
 and in some cases an `ob` array containing the weather values in a specific order. 
 
 Unfortunately, the meaning of each `ob` array element is not identified in the message; you
