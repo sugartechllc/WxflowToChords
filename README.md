@@ -2,7 +2,7 @@
 
 ## About
 JSONtoCHORDS is a python module for converting json formatted datagrams into the CHORDS
-REST api, and submitting the data to a [CHORDS portal](chordsrt.com).
+REST api, and submitting the data to a [CHORDS portal](http://chordsrt.com).
 
 ## JSON Input Schema
 Input data is structured according to the Weatherflow 
