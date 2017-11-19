@@ -7,10 +7,13 @@ REST api, and submitting the data to a [CHORDS portal](http://chordsrt.com).
 ## JSON Input Schema
 Input data is structured according to the Weatherflow 
 [UDP api](https://weatherflow.github.io/SmartWeather/api/udp.html).
-Messages have 'type' field identifying the type of message,
-and an 'ob' array containing the values in a specific order. Unfortunately,
-the meaning of each array element is not identified in the message; you
-have to refer to the documentation to determine this.
+Messages have  a`type` field identifying the type of message,
+status fields indicating hardware health, 
+and in some cases an `ob` array containing the weather values in a specific order. 
+
+Unfortunately, the meaning of each `ob` array element is not identified in the message; you
+have to refer to the documentation to determine this. Other values, such as voltage and rssi,
+can be located by identifier.
 
 For example:
 
@@ -21,6 +24,19 @@ For example:
   "device_id":1110,
   "hub_sn": "HB-00000001",
   "ob":[1493322445,2.3,128]
+}
+```
+```
+{
+  "serial_number": "AR-00004049",
+  "type": "device_status",
+  "hub_sn": "HB-00000001",
+  "timestamp": 1510855923,
+  "uptime": 2189,
+  "voltage": 3.50,
+  "firmware_revision": 17,
+  "rssi": -17,
+  "sensor_status": 0
 }
 ```
 
