@@ -1,4 +1,4 @@
-# UDPtoCHORDS README
+# JSONtoCHORDS README
 
 ## About
 UDPtoCHORDS is a python module for converting json formatted datagrams into the CHORDS Rest api, 
