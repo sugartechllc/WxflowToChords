@@ -10,4 +10,5 @@ sock.bind(('', UDP_PORT))
 while True:
     jbytes, addr = sock.recvfrom(2000) 
     msg = json.loads(jbytes.decode('utf-8'))
-    print(json.dumps(msg, indent=4, sort_keys=True))
+    if msg["type"] == 'obs_air':
+        print(json.dumps(msg, indent=4, sort_keys=True))
