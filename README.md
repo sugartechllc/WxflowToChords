@@ -146,4 +146,7 @@ cd micropython/ports/unix
 make axtls
 PKG_CONFIG_PATH=/usr/local/opt/libffi/lib/pkgconfig make install
 ./micropython
+>>> import upip
+>>> upip.install('micropython-socket')
+>>> upip.install('micropython-json')
 ```

@@ -1,11 +1,13 @@
 import socket
+import json
 
-import socket
 UDP_PORT = 50222
- 
+
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sock.bind(('',50222))
+
+sock.bind(('', UDP_PORT))
 
 while True:
-    data, addr = sock.recvfrom(2000) 
-    print addr, data
+    jbytes, addr = sock.recvfrom(2000) 
+    msg = json.loads(jbytes.decode('utf-8'))
+    print(json.dumps(msg, indent=4))
