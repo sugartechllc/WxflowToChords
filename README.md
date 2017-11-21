@@ -149,4 +149,6 @@ PKG_CONFIG_PATH=/usr/local/opt/libffi/lib/pkgconfig make install
 >>> import upip
 >>> upip.install('micropython-socket')
 >>> upip.install('micropython-json')
+>>> upip.install('micropython-thread')
+>>> upip.install('micropython-os')
 ```
