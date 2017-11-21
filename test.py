@@ -1,14 +1,14 @@
-import socket
 import json
+import os
+import time
+import wxflow
 
-UDP_PORT = 50222
-
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-sock.bind(('', UDP_PORT))
+wxflow.start(port=50222)
 
 while True:
-    jbytes, addr = sock.recvfrom(2000) 
-    msg = json.loads(jbytes.decode('utf-8'))
-    if msg["type"] == 'obs_air':
-        print(json.dumps(msg, indent=4, sort_keys=True))
+    time.sleep(1)
+    msgs = wxflow.get_msgs()
+    for o in msgs:
+        print (o.decode('UTF-8'))
+    
+
