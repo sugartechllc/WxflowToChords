@@ -12,8 +12,11 @@ def msg_capture(port):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.bind(('', port))
     while True:
-        jbytes, addr = sock.recvfrom(2000)
-        #print (jbytes.decode('utf-8'))
+        try:
+            jbytes, addr = sock.recvfrom(2000)
+        except (IOError, e):
+            if e.errno != errno.EINTR:
+                raise
         wxflow_msg_queue_lock.acquire()
         wxflow_msg_queue.append(jbytes)
         wxflow_msg_queue_lock.release()
