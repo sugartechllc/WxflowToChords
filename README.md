@@ -41,99 +41,70 @@ For example:
 ```
 
 ## Configuration
-A JSON structure defines the mapping between the input data and the CHORDS portal api.
+A JSON structure defines the mapping between the wxflow input data and the CHORDS portal api.
+A collection of wxflow messages are defined (`wxflow_msgs`). Each one contains a list of 
+match attributes. If an incoming messages matches one of the `wxflow_msgs`, that entry is 
+used to decode the message.
 
-```
-"chords_host": "chords_host.com",
+The keys in `wxflow_msgs` (e.g. "AirObs") are user-assigned, and have no special meaning.
 
-"listen_port": 50222,
+Within each message decoding specification, there are two types of keys. If one
+begins with an underscore, it is a directive to the decoder, such as `_enabled` or
+`_match`. Otherwise, it is a key that will match a field in the incoming message,
+and the element directs further message handling.
 
-"skey": "123456",
-
-"msg_types" : {
-  "rapid_wind":
-    [
-         {
-           "pos:" : 0,
-           "chords_short_name" : "time"
-         },
-         {
-           "pos:" : 1,
-           "chords_short_name" : "wspd"
-         },
-         {
-           "pos:" : 2,
-           "chords_short_name" : "wdir"
-  ]
-}
-
-"messages": {
-  "SugarTechLLC": { 
-    "enabled": true,
-    "weatherflow": {
-      "msg_type": "rapid_wind"
-      "serial_number": "SK-00008453",
-      "device_id":1110,
-      "hub_sn": "HB-00000001"
-    },
-    "chords" : {
-      "chords_inst_id": 1
-    }
-  },
-  "SwellCentral": {
-  }
-}
-```
-
+The `ob` element has special meaning. It contains instructions (in `obs`) on how to
+route the elements of an wxflow `ob` array.
 ```
 {
-  "serial_number": "SK-00008453",
-  "type":"rapid_wind",
-  "device_id":1110,
-  "hub_sn": "HB-00000001",
-  "ob":[1493322445,2.3,128]
-}
-```
-
-
-```
-"chords_host": "chords_host.com",
-
-"listen_port": 50222,
-
-"skey": "123456",
-
-"msg_types" : {
-  "rapid_wind":
-    [
-         {
-           "pos:" : 0,
-           "chords_short_name" : "time"
-         },
-         {
-           "pos:" : 1,
-           "chords_short_name" : "wspd"
-         },
-         {
-           "pos:" : 2,
-           "chords_short_name" : "wdir"
-  ]
-}
-
-"messages": {
-  "SugarTechLLC": { 
-    "enabled": true,
-    "weatherflow": {
-      "msg_type": "rapid_wind"
-      "serial_number": "SK-00008453",
-      "device_id":1110,
-      "hub_sn": "HB-00000001"
+  "chords_host": "chords_host.com",
+  "listen_port": 50222,
+  "skey": "123456",
+  "wxflow_msgs": {
+    "AirObs": { 
+      "_enabled": true,
+      "_match": {
+        "type": "obs_air",
+        "serial_number": "AR-00005436"
+      },
+      "ob": {
+        "chords_inst_id": "1", 
+        "obs": [
+          [0, "time"],
+          [1, "pres"]
+        ]
+      }
     },
-    "chords" : {
-      "chords_inst_id": 1
+    "HubStatus": {
+      "_enabled": true,
+      "_match": {
+        "type": "hub_status",
+        "serial_number": "HB-00004236"
+      },
+      "rssi" :{
+        "chords_inst_id": "1",
+        "chords_var": "hubrssi"
+      }
+    },
+    "AirStatus": {
+      "_enabled": true,
+      "_match": {
+        "type": "station_status",
+        "serial_number": "AR-00005436"
+      },
+      "voltage": {
+          "chords_inst_id": "1",
+          "chords_var": "airv"
+      },
+      "rssi": {
+        "chords_inst_id": "1",
+        "chords_var": "airrssi"
+      },
+      "sensor_status": {
+        "chords_inst_id": "1",
+        "chords_var": "airstat"
+      }
     }
-  },
-  "SwellCentral": {
   }
 }
 ```
