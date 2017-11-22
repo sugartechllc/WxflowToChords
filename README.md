@@ -6,10 +6,10 @@ REST api, and submitting the data to a [CHORDS portal](http://chordsrt.com).
 
 ## JSON Input Schema
 Input data is structured according to the Weatherflow 
-[UDP api](https://weatherflow.github.io/SmartWeather/api/udp.html).
+[UDP JSON schema](https://weatherflow.github.io/SmartWeather/api/udp.html).
 Messages have  a`type` field identifying the type of message,
 status fields indicating identity and hardware health, 
-and in some cases an `ob` array containing the weather values in a specific order. 
+and in some cases an `ob` array containing the observed values, in a specific order. 
 
 Unfortunately, the meaning of each `ob` array element is not identified in the message; you
 have to refer to the documentation to determine this. Other values, such as voltage and rssi,
@@ -17,6 +17,18 @@ can be located by identifier.
 
 For example:
 
+```
+{
+  "serial_number":"HB-00000001",
+  "type":"hub_status",
+  "firmware_revision":"13",
+  "uptime":1670133,
+  "rssi":-62,
+  "timestamp":1495724691,
+  "reset_flags": 234881026,
+  "stack": "1616,1608"
+}
+```
 ```
 {
   "serial_number": "SK-00008453",
@@ -39,6 +51,8 @@ For example:
   "sensor_status": 0
 }
 ```
+The WeatherFlow documentation seems to be in flux, so be sure to capture some datagrams
+to verify what they are transmitting.
 
 ## Configuration
 A JSON structure defines the mapping between the input data and the CHORDS portal api.
