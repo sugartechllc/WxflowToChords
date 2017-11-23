@@ -1,7 +1,9 @@
 try:
     import urequests as requests
+    on_micropython = True
 except:
     import requests
+    on_micropython = False
 import _thread
 import json
 import time
@@ -29,7 +31,10 @@ def sendRequests(timeout):
             
             # Transmit the request
             if len(uri) > 0:
-                response = requests.get(uri, timeout=timeout)
+                if not on_micropython:
+                    response = requests.get(uri, timeout=timeout)
+                else:
+                    response = requests.get(uri)
             
             # How many more messages avaiable?
             uri_queue_lock.acquire()
@@ -42,6 +47,7 @@ def sendRequests(timeout):
             uri_queue_lock.acquire()
             uri_send_failures = uri_send_failures + 1
             uri_queue_lock.release()
+            print (e)
 
             
 #####################################################################
@@ -133,7 +139,7 @@ if __name__ == '__main__':
     
   startSender(10);
     
-  host = "192.168.0.1"
+  host = "10.0.0.7"
   
   chords_stuff = json.loads(chords_json)
   
