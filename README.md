@@ -145,6 +145,46 @@ the `at=` timestamp.
     }
 ```
 
+## WxToChords
+
+Typical decoding; with the wxflow message followed by the CHORDS structured data:
+```
+{"serial_number":"HB-00004236","type":"hub_status","firmware_version":"26","uptime":88638,"rssi":-58,"timestamp":1511456148,"reset_flags":503316482}
+{
+  "inst_id": "1",
+  "skey": "123456",
+  "vars": {
+    "at": 1511456148,
+    "rssihub": -58
+  }
+}
+{"serial_number":"AR-00005436","type":"station_status","hub_sn":"HB-00004236","timestamp":1511456154,"uptime":1825691,"voltage":3.46,"version":20,"rssi":-73,"sensor_status":4}
+{
+  "inst_id": "1",
+  "skey": "123456",
+  "vars": {
+    "at": 1511456154,
+    "rssiair": -73,
+    "statair": 4,
+    "vair": 3.46
+  }
+}
+{"serial_number":"AR-00005436","type":"obs_air","hub_sn":"HB-00004236","obs":[[1511456154,770.00,13.43,33,0,0,3.46,1]],"firmware_revision":20}
+{
+  "inst_id": "1",
+  "skey": "123456",
+  "vars": {
+    "at": 1511456154,
+    "lcount": 0,
+    "ldist": 0,
+    "pres": 770.0,
+    "rh": 33,
+    "tdry": 13.43,
+    "vbat": 3.46
+  }
+}
+```
+
 ## Micropython on OSX
 ```
 brew install libffi
