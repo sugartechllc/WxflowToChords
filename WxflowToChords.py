@@ -1,31 +1,22 @@
 import json
 import sys
 
-#####################################################################
 def configloads(config_string):
-    """
-    Read the json configuration from a string.
-    Return the decoded object.
-    """
+    """Return the objectified object from a JSON string. """
     config = json.loads(config_string)
     return config
 
-#####################################################################
+
 def configload(config_file):
-    """
-    Read the json configuration from a file.
-    Return the decoded object.
-    """
+    """Return the objectified object from a JSON file. """
+    
     config = configloads(open(config_file).read())
     return config
 
-#####################################################################
+
 def msgMatch(wxflow_decoders, wxflow_msg):
-    """
-    See if the incoming message matches one of the match criteria.
-    If so, return the match criteria. 
-    Otherwise, return None.
-    
+    """See if the incoming message matches one of the match criteria.
+
     wxflow_decoders: a collection of wxflow message dictionaries,
     each containing at least a dictionary entry "_match",
     which contains key:value pairs for matching. If
@@ -37,7 +28,14 @@ def msgMatch(wxflow_decoders, wxflow_msg):
       }
     }
     
-    wxflow_msg: a wxflow message object.
+    Arguments:
+    wxflow_deciders: -- A list of wxfow message decoders.
+    wxflow_msg       -- a wxflow message object.
+    
+    Returns:
+    If a match, return the decoder. 
+    Otherwise, return None.
+
     """
      # Iterate through the criteria, looking for a match
     for decoder in wxflow_decoders:
@@ -58,16 +56,17 @@ def msgMatch(wxflow_decoders, wxflow_msg):
 
     return None
     
-#####################################################################
+
 def extractChords(decoder, skey, wxflow_msg):
-    """
-    Apply the decoder to the wxflow message. It
-    is assumed that the decoder matches the incoming message.
+    """Apply the decoder to the wxflow message. 
     
-    decoder: An entry from the 
-    wxflow_msg: The wxflow message object
+    It is assumed that the decoder matches the incoming message.
     
-    Return: 
+    Arguments:
+    decoder    -- An entry from the 
+    wxflow_msg -- The wxflow message object
+    
+    Returns: 
       {
         "inst_id": "id",
         "vars": {
@@ -118,11 +117,16 @@ def extractChords(decoder, skey, wxflow_msg):
 
     return retval
     
-#####################################################################
+
 def toChords(config, wxflow_msg):
-    """
-    config: the wxflow decoding configuration.
-    msg:    a wxflow message object.
+    """Use the config to convert a wxflow message to a CHORDS structure.
+    
+    Arguments:
+    config -- the wxflow decoding configuration.
+    msg    -- a wxflow message object.
+    
+    Returns:
+    The CHORDS structure.
     """
     
     # Initialize return
@@ -147,7 +151,6 @@ def toChords(config, wxflow_msg):
         
     return chords_stuff
 
-#####################################################################
 #####################################################################
 if __name__ == '__main__':
 
