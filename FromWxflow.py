@@ -15,12 +15,13 @@ def msg_capture(port):
     while True:
         try:
             jbytes, addr = sock.recvfrom(2000)
-        except (OSError, e):
-            if e.errno != errno.EINTR:
+            wxflow_msg_queue_lock.acquire()
+            wxflow_msg_queue.append(jbytes)
+            wxflow_msg_queue_lock.release()
+        except OSError as e:
+            err_no = e.args[0]
+            if err_no != 4:
                 raise
-        wxflow_msg_queue_lock.acquire()
-        wxflow_msg_queue.append(jbytes)
-        wxflow_msg_queue_lock.release()
     
 #####################################################################
 def get_msgs():
