@@ -18,7 +18,6 @@ while True:
     time.sleep(1)
     msgs = FromWxflow.get_msgs()
     for m in msgs:
-        m = m.decode('UTF-8')
         wxflow = json.loads(m)
         chords_stuff = WxflowToChords.toChords(config, wxflow)
         
