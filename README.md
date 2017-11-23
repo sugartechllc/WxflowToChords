@@ -1,17 +1,26 @@
 # JSONtoCHORDS README
 
 ## About
-JSONtoCHORDS is a python module for converting json formatted datagrams into the CHORDS
+JSONtoCHORDS is a python module for converting Weatherflow json formatted datagrams into the CHORDS
 REST api, and submitting the data to a [CHORDS portal](http://chordsrt.com).
 
-## JSON Input Schema
+There are three python modules:
+* FromWxflow: Capture datagrams and put them in a queue. This is multithreaded, so that datagram reading
+  can occur in parallel with other processing.
+* WxflowToChords: Translate the wxflow messages into structured data matching the CHORDS REST api. A 
+  JSON based configuration specifies the translation.
+* ToChords: Send the structured data to a CHORDS portal. This is multithreaded, so that http writing
+  can occur in parallel with other processing. The same JSON configuration provides other information for
+  the CHORDS connection.
+
+## Weatherflow JSON Schema
 Input data is structured according to the Weatherflow 
 [UDP JSON schema](https://weatherflow.github.io/SmartWeather/api/udp.html).
 Messages have  a`type` field identifying the type of message,
 status fields indicating identity and hardware health, 
-and in some cases an `ob` array containing the observed values, in a specific order. 
+and in some cases an `obs` array containing the observed values, in a predefined order. 
 
-Unfortunately, the meaning of each `ob` array element is not identified in the message; you
+Unfortunately, the meaning of each `obs` array element is not identified in the message; you
 have to refer to the documentation to determine this. Other values, such as voltage and rssi,
 can be located by identifier.
 
@@ -54,7 +63,7 @@ For example:
 The WeatherFlow documentation seems to be in flux, so be sure to capture some datagrams
 to verify what they are transmitting.
 
-## Configuration
+## JSONtoCHORDS Configuration
 A JSON structure defines the mapping between the wxflow input data and the CHORDS portal api.
 A collection of wxflow messages are defined (`wxflow_msgs`). Each one contains a list of 
 match attributes. If an incoming messages matches one of the `wxflow_msgs`, that entry is 
