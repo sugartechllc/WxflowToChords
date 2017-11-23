@@ -41,19 +41,20 @@ def msgMatch(wxflow_decoders, wxflow_msg):
     """
      # Iterate through the criteria, looking for a match
     for decoder in wxflow_decoders:
-        # Iterate through the match keys
-        match_fields = decoder["_match"]
-        for k in match_fields:
-            # Does this key exist in the message?
-            matched = True
-            if k in wxflow_msg:
-                # Does the value match?
-                if wxflow_msg[k] != match_fields[k]:
-                    matched = False
-                    break
-
-        if matched:
-            return decoder
+        if decoder['_enabled']:
+            # Iterate through the match keys
+            match_fields = decoder["_match"]
+            for k in match_fields:
+                # Does this key exist in the message?
+                matched = True
+                if k in wxflow_msg:
+                    # Does the value match?
+                    if wxflow_msg[k] != match_fields[k]:
+                        matched = False
+                        break
+    
+            if matched:
+                return decoder
 
     return None
     
@@ -142,7 +143,7 @@ def toChords(config, wxflow_msg):
     # If we got a decoder, there is a message match.
     if decoder:
         # Break CHORDS stuff out of the message.
-        chords_stuff = extractChords(decoder, skey, wxflow)
+        chords_stuff = extractChords(decoder, skey, wxflow_msg)
         
     return chords_stuff
 
