@@ -7,6 +7,7 @@ except:
 import _thread
 import json
 import time
+import sys
 
 uri_queue = []
 uri_send_failures = 0
@@ -139,7 +140,11 @@ if __name__ == '__main__':
     
   startSender(10);
     
-  host = "10.0.0.7"
+  if len(sys.argv) != 2:
+      print ("Usage:", sys.argv[0], "host")
+      sys.exit(1)
+
+  host = sys.argv[1]
   
   chords_stuff = json.loads(chords_json)
   
