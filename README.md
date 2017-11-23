@@ -67,8 +67,8 @@ begins with an underscore, it is a directive to the decoder, such as `_enabled` 
 `_match`. Otherwise, it is a key that will match a field in the incoming message,
 and the element directs further message handling.
 
-The `ob` element has special meaning. It contains instructions (in `obs`) on how to
-route the elements of an wxflow `ob` array.
+The `obs` element has special meaning. It contains instructions on how to
+route the elements of an wxflow `obs` array.
 
 If a CHORDS variable is identified as `at`, it will be converted to a timestamp and used for
 the `at=` timestamp.
