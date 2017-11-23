@@ -60,7 +60,7 @@ A collection of wxflow messages are defined (`wxflow_msgs`). Each one contains a
 match attributes. If an incoming messages matches one of the `wxflow_msgs`, that entry is 
 used to decode the message.
 
-The keys in `wxflow_msgs` (e.g. "AirObs") are user-assigned, and have no special meaning.
+The `wxflow_type` in `wxflow_decoders` (e.g. "ObsAir") are user-assigned, and have no special meaning.
 
 Within each message decoding specification, there are two types of keys. If one
 begins with an underscore, it is a directive to the decoder, such as `_enabled` or
@@ -69,58 +69,71 @@ and the element directs further message handling.
 
 The `ob` element has special meaning. It contains instructions (in `obs`) on how to
 route the elements of an wxflow `ob` array.
+
+If a CHORDS variable is identified as `at`, it will be converted to a timestamp and used for
+the `at=` timestamp.
 ```
 {
-  "chords_host": "chords_host.com",
-  "listen_port": 50222,
-  "skey": "123456",
-  "wxflow_msgs": {
-    "AirObs": { 
-      "_enabled": true,
-      "_match": {
-        "type": "obs_air",
-        "serial_number": "AR-00005436"
-      },
-      "ob": {
-        "chords_inst_id": "1", 
-        "obs": [
-          [0, "time"],
-          [1, "pres"]
-        ]
-      }
-    },
-    "HubStatus": {
-      "_enabled": true,
-      "_match": {
-        "type": "hub_status",
-        "serial_number": "HB-00004236"
-      },
-      "rssi" :{
-        "chords_inst_id": "1",
-        "chords_var": "hubrssi"
-      }
-    },
-    "AirStatus": {
-      "_enabled": true,
-      "_match": {
-        "type": "station_status",
-        "serial_number": "AR-00005436"
-      },
-      "voltage": {
-          "chords_inst_id": "1",
-          "chords_var": "airv"
-      },
-      "rssi": {
-        "chords_inst_id": "1",
-        "chords_var": "airrssi"
-      },
-      "sensor_status": {
-        "chords_inst_id": "1",
-        "chords_var": "airstat"
-      }
+      "chords_host": "chords_host.com",
+      "listen_port": 50222,
+      "skey": "123456",
+      "wxflow_decoders": [
+        { 
+          "_enabled": true,
+          "_wxflow_type": "ObsAir",
+          "_chords_inst_id": "1",
+          "_match": {
+            "type": "obs_air",
+            "serial_number": "AR-00005436"
+          },
+          "obs":[
+              [0, "at"],
+              [1, "pres"],
+              [2, "tdry"],
+              [3, "rh"],
+              [4, "lcount"],
+              [5, "ldist"],
+              [6, "vbat"]
+            ]
+        },
+        {
+          "_enabled": true,
+          "_wxflow_type": "HubStatus",
+          "_chords_inst_id": "1",
+          "_match": {
+            "type": "hub_status",
+            "serial_number": "HB-00004236"
+          },
+          "timestamp": {
+            "chords_var": "at"
+          },
+          "rssi" :{
+            "chords_var": "rssihub"
+          }
+        },
+        {
+          "_enabled": true,
+          "_wxflow_type": "StationStatus",
+          "_chords_inst_id": "1",
+          "_match": {
+            "type": "station_status",
+            "serial_number": "AR-00005436"
+          },
+          "timestamp": {
+            "chords_var": "at"
+          },
+          "voltage": {
+              "chords_var": "vair"
+          },
+          "rssi": {
+            "chords_var": "rssiair"
+          },
+          "sensor_status": {
+            "chords_var": "statair"
+          }
+        }
+      ]
     }
-  }
-}
 ```
 
 ## Micropython on OSX
