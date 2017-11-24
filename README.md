@@ -1,5 +1,12 @@
 # WxflowToChords README
 
+```
+python3 WxflowToChords config
+```
+```
+micropython WxflowToChords config
+```
+
 ## About
 WxflowToChords are a set of python modules for converting Weatherflow json formatted datagrams into the CHORDS
 REST api, and submitting the data to a [CHORDS portal](http://chordsrt.com).
