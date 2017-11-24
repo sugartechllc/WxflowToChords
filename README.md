@@ -74,7 +74,7 @@ For example:
 The WeatherFlow documentation seems to be in flux, so be sure to capture some datagrams
 to verify what they are transmitting.
 
-## JSONtoCHORDS Configuration
+## DecodeWxflow Configuration
 A JSON structure defines the mapping between the wxflow input data and the CHORDS portal api.
 A collection of wxflow messages are defined (`wxflow_msgs`). Each one contains a list of 
 match attributes. If an incoming messages matches one of the `wxflow_msgs`, that entry is 
