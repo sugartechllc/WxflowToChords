@@ -158,7 +158,7 @@ the `at=` timestamp.
 
 ## WxToChords
 
-Typical decoding; with the wxflow message followed by the CHORDS structured data:
+Example processing, with the wxflow message followed by the CHORDS structured data:
 ```
 {"serial_number":"HB-00004236","type":"hub_status","firmware_version":"26","uptime":88638,"rssi":-58,"timestamp":1511456148,"reset_flags":503316482}
 {
