@@ -5,6 +5,7 @@ import sys
 
 import FromWxflow
 import WxflowToChords
+import ToChords
 
 if len(sys.argv) != 2:
     print ("Usage:", sys.argv[0], 'config_file')
@@ -12,8 +13,13 @@ if len(sys.argv) != 2:
     
 configfile = sys.argv[1]
 config     = WxflowToChords.configload(sys.argv[1])
+host = config["chords_host"]
+port = config["listen_port"]
+skey = config["skey"]
 
-FromWxflow.start(port=50222)
+FromWxflow.start(port)
+
+ToChords.startSender(10)
 
 while True:
     time.sleep(1)
@@ -26,4 +32,6 @@ while True:
             print (m)
             for record in chords_stuff:
                 print (json.dumps(record, indent=2, sort_keys=True))
-                       
+                uri = ToChords.buildURI(host, record)
+                print (uri)
+                ToChords.submitURI(uri)

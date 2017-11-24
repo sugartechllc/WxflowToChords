@@ -106,11 +106,14 @@ def buildURI(host, chords_stuff):
             uri = uri + "&" + var
             
     if "at" in chords_stuff["vars"]:
-        uri = uri + "?" + "at=" + str(chords_stuff["vars"]["at"])
+        unix_time = chords_stuff["vars"]["at"]
+        t = time.gmtime(unix_time)
+        timestamp = "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}Z".format(t[0], t[1], t[2], t[3], t[4], t[5])
+        uri = uri + "&at=" + timestamp
     
     if "skey" in chords_stuff:
         if chords_stuff["skey"] != "":
-            uri = uri + "?" + "key=" + str(chords_stuff["skey"])
+            uri = uri + "&" + "key=" + str(chords_stuff["skey"])
             
     return uri
 
