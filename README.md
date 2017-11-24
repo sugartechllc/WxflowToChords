@@ -1,17 +1,28 @@
-# JSONtoCHORDS README
+# WxflowToChords README
 
 ## About
-JSONtoCHORDS is a python module for converting Weatherflow json formatted datagrams into the CHORDS
+WxflowToChords are a set of python modules for converting Weatherflow json formatted datagrams into the CHORDS
 REST api, and submitting the data to a [CHORDS portal](http://chordsrt.com).
 
-There are three python modules:
+There are four python modules:
 * FromWxflow: Capture datagrams and put them in a queue. This is multithreaded, so that datagram reading
   can occur in parallel with other processing.
-* WxflowToChords: Translate the wxflow messages into structured data matching the CHORDS REST api. A 
+* DecodeWxflow: Translate the wxflow messages into structured data matching the CHORDS REST api. A 
   JSON based configuration specifies the translation.
 * ToChords: Send the structured data to a CHORDS portal. This is multithreaded, so that http writing
   can occur in parallel with other processing. The same JSON configuration provides other information for
   the CHORDS connection.
+* WxflowToChords: Strings all three modules together for the end-to-end process.
+
+Each module expects a configuration, provided in a JSON file. A single file can contain the
+configuration for all modules, or a file can be created for just the items needed for a gven module.
+
+Each module will run a test case if it is invoked individually.
+
+This code will be run on both regular computers, and micropython systems such as the WiPy. Thus
+the code must be python3 compatible, as well as micropython compatible. The [Unix version of
+micropython](https://github.com/micropython/micropython/wiki/Getting-Started) can be used to 
+verify comaptibility for the latter.
 
 ## Weatherflow JSON Schema
 Input data is structured according to the Weatherflow 
