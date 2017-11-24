@@ -1,6 +1,20 @@
 import socket
 import _thread
 import time
+import sys
+import json
+
+"""
+Capture wxflow datagrams in a queue and serve out to a consumer.
+
+The JSON configuration file must contain at least:
+{
+    "listen_port": 5022
+}
+
+It is fine to include all of the configuration
+needed by other modules (e.g. DecodeWxflow and ToChords).
+"""
 
 wxflow_msg_queue = []
 wxflow_msg_queue_lock = _thread.allocate_lock()
@@ -24,7 +38,6 @@ def msg_capture(port):
             err_no = e.args[0]
             if err_no != 4:
                 raise
-    
 
 
 def get_msgs():
@@ -43,7 +56,7 @@ def get_msgs():
     return msg_list
 
 
-def start(port):
+def startReader(port):
     """ Start the datagram reading thread."""
     
     _thread.start_new_thread(msg_capture, (port,))
@@ -52,7 +65,13 @@ def start(port):
 #####################################################################
 if __name__ == '__main__':
 
-    start(port=50222)
+    if len(sys.argv) != 2:
+        print ("Usage:", sys.argv[0], 'config_file')
+        sys.exit (1)
+        
+    config = json.loads(open(sys.argv[1]).read())
+    
+    startReader(port=config["listen_port"])
     
     while True:
         msgs = get_msgs()

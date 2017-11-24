@@ -9,6 +9,20 @@ import json
 import time
 import sys
 
+"""
+Send CHORDS data structures to a CHORDS instance.
+
+The JSON configuration file must contain at least:
+{
+      "chords_host": "chords_host.com",
+      "skey": "key"
+}
+
+It is fine to include all of the configuration
+needed by other modules (e.g. FromWxflow and WxflowDecode).
+
+"""
+
 uri_queue = []
 uri_send_failures = 0
 uri_queue_lock = _thread.allocate_lock()
@@ -144,10 +158,11 @@ if __name__ == '__main__':
   startSender(10);
     
   if len(sys.argv) != 2:
-      print ("Usage:", sys.argv[0], "host")
+      print ("Usage:", sys.argv[0], "config_file")
       sys.exit(1)
 
-  host = sys.argv[1]
+  config = json.loads(open(sys.argv[1]).read())
+  host   = config["chords_host"]
   
   chords_stuff = json.loads(chords_json)
   
