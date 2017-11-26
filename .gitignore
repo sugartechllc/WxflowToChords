@@ -101,3 +101,5 @@ ENV/
 .mypy_cache/
 /.project
 /.pydevproject
+/mtnking_config.json
+/rebecca_config.json
