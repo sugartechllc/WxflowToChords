@@ -155,7 +155,7 @@ if __name__ == '__main__':
       }\
     }'
     
-  startSender(10);
+  startSender(30);
     
   if len(sys.argv) != 2:
       print ("Usage:", sys.argv[0], "config_file")
