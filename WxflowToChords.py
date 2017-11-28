@@ -16,6 +16,7 @@ of the required configuration values.
 
 """
 def run(config_file):
+    print("Starting WxflowToChords with", config_file)
     config = json.loads(open(config_file).read())
     host   = config["chords_host"]
     port   = config["listen_port"]
