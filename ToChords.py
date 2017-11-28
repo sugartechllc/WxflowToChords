@@ -1,7 +1,7 @@
 try:
     import urequests as requests
     on_micropython = True
-except:
+except ImportError:
     import requests
     on_micropython = False
 import _thread

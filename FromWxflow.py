@@ -36,8 +36,7 @@ def msg_capture(port):
             wxflow_msg_queue_lock.release()
         except OSError as e:
             err_no = e.args[0]
-            if err_no != 4:
-                raise
+            print ("Error in msg_capture:", err_no, e)
 
 
 def get_msgs():
