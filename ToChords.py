@@ -62,7 +62,7 @@ def sendRequests(timeout):
             uri_queue_lock.acquire()
             uri_send_failures = uri_send_failures + 1
             uri_queue_lock.release()
-            print (e)
+            print ("Error in sendRequests:", e)
 
             
 #####################################################################
