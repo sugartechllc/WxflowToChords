@@ -1,4 +1,4 @@
-import json
+from json import loads
 import sys
 
 """
@@ -222,11 +222,11 @@ if __name__ == '__main__':
         print ("Usage:", sys.argv[0], "config_file")
         sys.exit(1)
     
-    config = json.loads(open(sys.argv[1]).read())
+    config = loads(open(sys.argv[1]).read())
      
     for jmsg in sample_msgs:
         # Convert json to an object
-        wxflow = json.loads(jmsg)
+        wxflow = loads(jmsg)
         chords_stuff = toChords(config, wxflow)
         
         if chords_stuff:

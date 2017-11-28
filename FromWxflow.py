@@ -1,4 +1,4 @@
-import socket
+from socket import socket, AF_INET, SOCK_DGRAM
 import _thread
 import time
 import sys
@@ -26,11 +26,11 @@ def msg_capture(port):
     global wxflow_msg_queue
     global wxflow_msg_queue_lock
     
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock = socket(AF_INET, SOCK_DGRAM)
     sock.bind(('', port))
     while True:
         try:
-            jbytes, addr = sock.recvfrom(2000)
+            jbytes, addr = sock.recvfrom(200)
             wxflow_msg_queue_lock.acquire()
             wxflow_msg_queue.append(jbytes)
             wxflow_msg_queue_lock.release()
@@ -76,5 +76,4 @@ if __name__ == '__main__':
         msgs = get_msgs()
         for m in msgs:
             print(m)
-
 
