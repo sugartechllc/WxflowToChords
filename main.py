@@ -1,2 +1,2 @@
-#import WxflowToChords
-#WxflowToChords.run("mtnking_config.json")
+import WxflowToChords
+WxflowToChords.run("conf.json")
