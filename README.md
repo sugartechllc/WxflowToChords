@@ -1,10 +1,10 @@
 # WxflowToChords README
 
 ```
-python3 WxflowToChords config
+python3 WxflowToChords config.json
 ```
 ```
-micropython WxflowToChords config
+micropython WxflowToChords config.json
 ```
 
 ## About
