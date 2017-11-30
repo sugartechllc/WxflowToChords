@@ -83,9 +83,9 @@ to verify what they are transmitting.
 
 ## DecodeWxflow Configuration
 A JSON structure defines the mapping between the wxflow input data and the CHORDS portal api.
-A collection of wxflow decoders are defined (`wxflow_decoders`), for each messae that is
+A collection of wxflow decoders are defined (`wxflow_decoders`), for each message that is
 to be translated. Each one contains a list of 
-match attributes. If an incoming messages matches one of the `wxflow_msgs`, that entry is 
+match attributes. If an incoming messages matches one of the `wxflow_decoders`, that entry is 
 used to decode the message.
 
 The `wxflow_type` in `wxflow_decoders` (e.g. "ObsAir") are user-assigned, and have no special meaning.
