@@ -7,6 +7,9 @@ import WxflowToChords
 # WxflowToChords startup. 
 # Wifi configuration occurs here; so don't do it in boot.py.
 #
+# Network configuration is read from network.json
+# WxflowToChords configuration is read from wx.json
+#
 # If the button on the WiPy expansion board is held during a hard reset,
 # the WiFi will be left configured as an access point (192.168.4.1), and no
 # other code will be run. Use this if you are having trouble syncing code.
@@ -54,7 +57,7 @@ if button():
                 machine.idle() # save power while waiting
 
         # !!! Start the app.
-        WxflowToChords.run("conf.json")
+        WxflowToChords.run("wx.json")
 
     except OSError as e:
         print ("network.json not found")
