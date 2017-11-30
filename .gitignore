@@ -6,10 +6,6 @@ __pycache__/
 # C extensions
 *.so
 
-# Config files
-network.json
-wx.json
-
 # Distribution / packaging
 .Python
 env/
@@ -103,8 +99,9 @@ ENV/
 
 # mypy
 .mypy_cache/
+
 /.project
 /.pydevproject
-/mtnking_config.json
-/rebecca_config.json
 /mtnking.json
+/network.json
+/wx.json
