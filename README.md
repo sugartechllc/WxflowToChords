@@ -231,7 +231,7 @@ Example processing, showing the wxflow datagram followed by the CHORDS structure
 }
 ```
 
-## Micropython on OSX
+## Micropython on macOS
 The goal is to have this running on a micropython embedded system. Fortunately, there is
 a micropython implmentation for Linux, macOS and Windows. This has been useful for testing
 the code apart from the embedded hardware. However, my experieince has been that the macOS
