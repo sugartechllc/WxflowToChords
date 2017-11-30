@@ -10,11 +10,11 @@ import WxflowToChords
 # If the button on the WiPy expansion board is held during a hard reset,
 # the WiFi will be left configured as an access point (192.168.4.1), and no
 # other code will be run. Use this if you are having trouble syncing code.
-
+#
 # If the button is not pressed, we will attempt to configure the
 # wifi in station mode, and start WxflowToChords.
 # The network configuration must be provided in a JSON 
-# configuration file containing:
+# configuration file named network.json, and containing:
 # {
 #   "router_ip": "10.0.0.1",
 #   "host_ip":   "10.0.0.100",
@@ -28,7 +28,7 @@ button = machine.Pin('G17',mode=machine.Pin.IN,pull=machine.Pin.PULL_UP)
 # if not pressed, use WiFi station mode.
 if button():
     try:
-        # Look for network configuration. It contains:
+        # Look for network configuration.
         os.stat("/flash/network.json")
         conf = json.loads(open("/flash/network.json").read())
         print ("")
