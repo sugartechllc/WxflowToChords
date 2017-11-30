@@ -81,7 +81,16 @@ For example:
 The WeatherFlow documentation seems to be in flux, so be sure to capture some datagrams
 to verify what they are transmitting.
 
-## DecodeWxflow Configuration
+## FromWxflow
+This module captures the broadcast datagrams from the weather station hub. It requires a
+JSON configuration file containing:
+```
+{
+  "listen_port": 5022
+}
+```
+
+## DecodeWxflow
 A JSON structure defines the mapping between the wxflow input data and the CHORDS portal api.
 A collection of wxflow decoders are defined (`wxflow_decoders`), for each message that is
 to be translated. Each one contains a list of 
@@ -163,10 +172,28 @@ the `at=` timestamp.
       ]
     }
 ```
+## ToChords
+This module takes the CHORDS data structure, reformats it as a URL, and sents it to a CHORDS instance as
+an http GET. There are two steps in this process, to bulid the URL and then submit it for transmission. This can be seen in 
+`WxflowToChords`:
+```
+  uri = ToChords.buildURI(host, chords_record)
+  ToChords.submitURI(uri)
+```
 
-## WxToChords
+`ToChords` requires a JSON configuration file containing the host name for the CHORDS instance, and the access key
+that is included in the GET.
+```
+{
+  "chords_host": "chords_host.com",
+  "skey": "key"
+}
+```
 
-Example processing, with the wxflow message followed by the CHORDS structured data:
+## WxflowToChords
+This module strings the three preceding ones together. It's the best place to see how the modules work.
+
+Example processing, showing the wxflow datagram followed by the CHORDS structured data:
 ```
 {"serial_number":"HB-00004236","type":"hub_status","firmware_version":"26","uptime":88638,"rssi":-58,"timestamp":1511456148,"reset_flags":503316482}
 {
@@ -205,6 +232,13 @@ Example processing, with the wxflow message followed by the CHORDS structured da
 ```
 
 ## Micropython on OSX
+The goal is to have this running on a micropython embedded system. Fortunately, there is
+a micropython implmentation for Linux, macOS and Windows. This has been useful for testing
+the code apart from the embedded hardware. However, my experieince has been that the macOS
+version is not bug-for-bug identical to the micropython board that I have been using (the
+[WiPy](https://pycom.io/hardware/wipy-3-0-specs/), and so this will only get you soo far.
+
+The general idea for bringing up micropython on macOS:
 ```
 brew install libffi
 git clone --recurse https://github.com/micropython/micropython.git
