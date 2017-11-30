@@ -7,12 +7,14 @@ import WxflowToChords
 # WxflowToChords startup. 
 # Wifi configuration occurs here; so don't do it in boot.py.
 #
-# Network configuration is read from network.json
-# WxflowToChords configuration is read from wx.json
+# network.json: contains network configuration
+# wx.json:      contains WxflowToChords configuration
 #
 # If the button on the WiPy expansion board is held during a hard reset,
-# the WiFi will be left configured as an access point (192.168.4.1), and no
-# other code will be run. Use this if you are having trouble syncing code.
+# (hold long enough for entire boot to occur) the WiFi will be left configured 
+# as an access point (192.168.4.1), and no other code will be run. 
+# Boot this if you are having trouble syncing code from pymakr, which can
+# happen if threads from WxflowToChords have been left running.
 #
 # If the button is not pressed, we will attempt to configure the
 # wifi in station mode, and start WxflowToChords.
