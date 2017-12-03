@@ -4,7 +4,7 @@ import json
 from network import WLAN
 import WxflowToChords
 
-# WxflowToChords startup. 
+# WxflowToChords startup for WiPy. 
 # Wifi configuration occurs here; so don't do it in boot.py.
 #
 # network.json: contains network configuration

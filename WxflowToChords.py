@@ -2,6 +2,12 @@ import json
 import os
 import time
 import sys
+from gc import collect
+try:
+    from micropython import mem_info
+except:
+    def mem_info():
+        pass
 
 import FromWxflow
 import DecodeWxflow
@@ -17,28 +23,27 @@ of the required configuration values.
 """
 def run(config_file):
     print("Starting WxflowToChords with", config_file)
+    mem_info()
     config = json.loads(open(config_file).read())
     host   = config["chords_host"]
     port   = config["listen_port"]
     
     FromWxflow.startReader(port)
-    
-    ToChords.startSender(10)
+    ToChords.startSender()
     
     while True:
+        collect()
         time.sleep(1)
         wxflow_msgs = FromWxflow.get_msgs()
         for w in wxflow_msgs:
             wxflow_msg = json.loads(w)
-            chords_stuff = DecodeWxflow.toChords(config, wxflow_msg)
+            chords_records = DecodeWxflow.toChords(config, wxflow_msg)
             
-            if chords_stuff:
-                print (wxflow_msg)
-                for chords_record in chords_stuff:
-                    print (json.dumps(chords_record))
+            if chords_records:
+                for chords_record in chords_records:
                     uri = ToChords.buildURI(host, chords_record)
-                    print (uri)
-                    ToChords.submitURI(uri)
+                    ToChords.submitURI(uri, 60)
+                    #mem_info()
     
 if __name__ == '__main__':
     if len(sys.argv) != 2:
