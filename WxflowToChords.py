@@ -3,12 +3,6 @@ import os
 import time
 import sys
 from gc import collect
-try:
-    from micropython import mem_info
-except:
-    def mem_info():
-        pass
-
 import FromWxflow
 import DecodeWxflow
 import ToChords
@@ -23,7 +17,6 @@ of the required configuration values.
 """
 def run(config_file):
     print("Starting WxflowToChords with", config_file)
-    mem_info()
     config = json.loads(open(config_file).read())
     host   = config["chords_host"]
     port   = config["listen_port"]

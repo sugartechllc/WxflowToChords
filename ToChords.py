@@ -5,10 +5,10 @@ try:
 except ImportError:
     import requests
 import _thread
-import traceback
 import json
 import time
 import sys
+from gc import collect
 
 """
 Send CHORDS data structures to a CHORDS instance.
@@ -46,13 +46,14 @@ def sendRequests(arg):
                 try:
                     # Transmit the request
                     response = requests.get(uri)
+                    response.close()
                     uri_sent = True      
-                    print(uri)
+                    print("Sent:", uri)
                     
                 except Exception as ex:
-                    print ("Error in sendRequests:", ex)
-                    print (traceback.format_exception_only(ex.__class__, ex))
+                    print ("Error in toChords.sendRequests:", str(ex), ex.args)
                     if ex.__class__.__name__ == "OSError":
+                        time.sleep(1)
                         if on_micropython:
                             machine.reset()
 
