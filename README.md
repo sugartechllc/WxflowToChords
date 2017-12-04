@@ -234,10 +234,10 @@ Example processing, showing the wxflow datagram followed by the CHORDS structure
 ## Micropython
 ### General
 Micropython is a slimmed down embedded version of python. The Ur-project seems to
-be micropython.org, but i have [learned](https://forum.pycom.io/topic/2256/macos-firmware-updater-out-of-date)
+be [micropython.org](http://micropython.org), but i have [learned](https://forum.pycom.io/topic/2256/macos-firmware-updater-out-of-date)
 that many device developers (pycom, adafruit, microbit) have forked this project, and incompatibilities
 may exist. It seems that most of the customizations are related to the particular hardware set, but
-that doesn't mean that they will track micropython.org releases.
+that doesn't mean that they will track the micropython.org releases.
 
 ### On macOS
 The goal is to have this running on a micropython embedded system. Fortunately, there is
