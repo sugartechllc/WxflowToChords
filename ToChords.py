@@ -53,7 +53,7 @@ def sendRequests(arg):
                 except Exception as ex:
                     print (
                         "Error in ToChords.sendRequests:", 
-                        ex.__class__.__name__,str(ex), ex.args)
+                        str(ex.__class__.__name__),str(ex), ex.args)
                     if ex.__class__.__name__ == "OSError":
                         if on_micropython:
                             machine.reset()

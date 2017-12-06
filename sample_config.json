@@ -2,6 +2,11 @@
       "chords_host": "chords_host.com",
       "listen_port": 50222,
       "skey": "123456",
+      "wipy_report": {
+        "_enabled": true,
+        "_chords_inst_id" : "1",
+        "_battv" : "wipyv"
+      },
       "wxflow_decoders": [
         { 
           "_enabled": true,
