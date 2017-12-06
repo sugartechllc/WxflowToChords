@@ -31,7 +31,8 @@ def run(config_file):
     FromWxflow.startReader(port)
     ToChords.startSender()
     
-    stat_count = 60
+    stat_cycle = 59
+    stat_count = stat_cycle
     while True:
         collect()
         time.sleep(1)
@@ -48,7 +49,7 @@ def run(config_file):
         # Send Wipy status
         if on_wipy:
             stat_count = stat_count + 1
-            if stat_count > 59:
+            if stat_count > stat_cycle:
                 chords_record = WipyStat.toChords(config)
                 uri = ToChords.buildURI(host, chords_record)
                 ToChords.submitURI(uri, 60)

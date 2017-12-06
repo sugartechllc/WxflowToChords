@@ -1,19 +1,11 @@
 import machine
-#
-# The voltage divider is 115k ohms/56k ohms = 0.3275
-#
-# The attenuation will be 2.5db = 0.562
-#
-# The ADC has a range of 12 bits, or 4095 over 1V
-# Each ADC count = 1/4095 = 0.0002442
-#
-# VBATT = (counts * 0.0002442) / (0.3275 * 0.562)
-#       = counts * 0.0013
-#
+
+
 def battv():
     adc  = machine.ADC()
-    apin = adc.channel(pin="P16", attn=machine.ADC.ATTN_2_5DB)
-    return apin() * 0.0013
+    apin = adc.channel(pin="P16", attn=machine.ADC.ATTN_11DB)
+    # empirically determined value of volts per count.
+    return apin() * 0.00275
 
 def toChords(config):
     """Create a CHORDS record.
