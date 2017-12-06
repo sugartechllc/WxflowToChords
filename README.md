@@ -111,66 +111,71 @@ If a CHORDS variable is identified as `at`, it will be converted to a timestamp 
 the `at=` timestamp.
 ```
 {
-      "chords_host": "chords_host.com",
-      "listen_port": 50222,
-      "skey": "123456",
-      "wxflow_decoders": [
-        { 
-          "_enabled": true,
-          "_wxflow_type": "ObsAir",
-          "_chords_inst_id": "1",
-          "_match": {
-            "type": "obs_air",
-            "serial_number": "AR-00005436"
-          },
-          "obs":[
-              [0, "at"],
-              [1, "pres"],
-              [2, "tdry"],
-              [3, "rh"],
-              [4, "lcount"],
-              [5, "ldist"],
-              [6, "vbat"]
-            ]
-        },
-        {
-          "_enabled": true,
-          "_wxflow_type": "HubStatus",
-          "_chords_inst_id": "1",
-          "_match": {
-            "type": "hub_status",
-            "serial_number": "HB-00004236"
-          },
-          "timestamp": {
-            "chords_var": "at"
-          },
-          "rssi" :{
-            "chords_var": "rssihub"
-          }
-        },
-        {
-          "_enabled": true,
-          "_wxflow_type": "StationStatus",
-          "_chords_inst_id": "1",
-          "_match": {
-            "type": "station_status",
-            "serial_number": "AR-00005436"
-          },
-          "timestamp": {
-            "chords_var": "at"
-          },
-          "voltage": {
-              "chords_var": "vair"
-          },
-          "rssi": {
-            "chords_var": "rssiair"
-          },
-          "sensor_status": {
-            "chords_var": "statair"
-          }
-        }
-      ]
+  "chords_host": "chords_host.com",
+  "listen_port": 50222,
+  "skey": "123456",
+  "wipy_report: {
+    "_enabled": true,
+    "_chords_inst_id" : "1",
+    "_battv" : "wipyv"
+  },
+  "wxflow_decoders": [
+    { 
+      "_enabled": true,
+      "_wxflow_type": "ObsAir",
+      "_chords_inst_id": "1",
+      "_match": {
+        "type": "obs_air",
+        "serial_number": "AR-00005436"
+      },
+      "obs":[
+          [0, "at"],
+          [1, "pres"],
+          [2, "tdry"],
+          [3, "rh"],
+          [4, "lcount"],
+          [5, "ldist"],
+          [6, "vbat"]
+        ]
+    },
+    {
+      "_enabled": true,
+      "_wxflow_type": "HubStatus",
+      "_chords_inst_id": "1",
+      "_match": {
+        "type": "hub_status",
+        "serial_number": "HB-00004236"
+      },
+      "timestamp": {
+        "chords_var": "at"
+      },
+      "rssi" :{
+        "chords_var": "rssihub"
+      }
+    },
+    {
+      "_enabled": true,
+      "_wxflow_type": "StationStatus",
+      "_chords_inst_id": "1",
+      "_match": {
+        "type": "station_status",
+        "serial_number": "AR-00005436"
+      },
+      "timestamp": {
+        "chords_var": "at"
+      },
+      "voltage": {
+          "chords_var": "vair"
+      },
+      "rssi": {
+        "chords_var": "rssiair"
+      },
+      "sensor_status": {
+        "chords_var": "statair"
+      }
     }
+  ]
+}
 ```
 ## ToChords
 This module takes the CHORDS data structure, reformats it as a URL, and sents it to a CHORDS instance as
