@@ -1,0 +1,13 @@
+[Unit]
+Description=Wxflow to CHORDS Service
+After=network.target
+
+[Service]
+User=pi
+Restart=always
+Type=simple
+WorkingDirectory=/home/pi/WxflowToChords
+ExecStart=/usr/bin/python3 /home/pi/WxflowToChords/WxflowToChords.py /home/pi/WxflowToChords/wx.json
+
+[Install]
+WantedBy=multi-user.target
