@@ -26,10 +26,8 @@ configuration for all modules, or a file can be created for just the items neede
 
 Each module will run a test case if it is invoked individually.
 
-This code will be run on both regular computers, and micropython systems such as the WiPy. Thus
-the code must be python3 compatible, as well as micropython compatible. The [Unix version of
-micropython](https://github.com/micropython/micropython/wiki/Getting-Started) can be used to 
-verify comaptibility for the latter.
+This code will be run on both regular computers, and micropython systems such as the Raspberry Pi Zero W. 
+The code has been testyed against python3 on MacOS and Raspian Lite.
 
 ## Weatherflow JSON Schema
 Input data is structured according to the Weatherflow 
@@ -236,7 +234,12 @@ Example processing, showing the wxflow datagram followed by the CHORDS structure
 }
 ```
 
-## Micropython
+## Micropython Notes
+I tried to get this working on a WiPy. It would run for indeterminate periods, and then throw
+OSError exceptions in the urequests code. After this, the networking would not work until after a reboot.
+So, I ripped out the WiPy specifics, andd transfered the project to a Raspberry Pi Zero W. Here
+are a few thoings learned while working with the WiPy.
+
 ### General
 Micropython is a slimmed down embedded version of python. The Ur-project seems to
 be [micropython.org](http://micropython.org), but i have [learned](https://forum.pycom.io/topic/2256/macos-firmware-updater-out-of-date)
