@@ -39,7 +39,7 @@ def run(config_file):
             if chords_records:
                 for chords_record in chords_records:
                     uri = ToChords.buildURI(host, chords_record)
-                    ToChords.submitURI(uri, 60)
+                    ToChords.submitURI(uri, 720)
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
