@@ -3,9 +3,6 @@
 ```
 python3 WxflowToChords config.json
 ```
-```
-micropython WxflowToChords config.json
-```
 
 ## About
 WxflowToChords are a set of python modules for converting Weatherflow json formatted datagrams into the CHORDS
