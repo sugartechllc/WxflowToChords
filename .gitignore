@@ -10,3 +10,4 @@ __pycache__/
 /network.json
 /wx.json
 /nohup.out
+.DS_Store
