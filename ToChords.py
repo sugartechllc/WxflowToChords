@@ -54,11 +54,7 @@ def sendRequests(arg):
                     print (
                         "Error in ToChords.sendRequests:", 
                         str(ex.__class__.__name__),str(ex), ex.args)
-                    if ex.__class__.__name__ == "OSError":
-                        if on_micropython:
-                            machine.reset()
 
-                response.close()
         else:
             # Empty queue, sleep
             time.sleep(1)
