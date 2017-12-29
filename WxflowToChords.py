@@ -9,8 +9,6 @@ from gc import collect
 
 import FromWxflow
 import DecodeWxflow
-import ToChords
-
 import pychords.tochords as tochords
 
 """
