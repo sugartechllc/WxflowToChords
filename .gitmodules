@@ -1,0 +1,4 @@
+[submodule "py-chords"]
+	path = py-chords
+	url = https://github.com/sugartechllc/py-chords.git
+	branch = master
