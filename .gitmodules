@@ -1,0 +1,4 @@
+[submodule "pychords"]
+	path = pychords
+	url = https://github.com/sugartechllc/pychords.git
+	branch = master
