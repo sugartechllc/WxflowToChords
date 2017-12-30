@@ -114,16 +114,17 @@ def msgMatch(wxflow_decoders, wxflow_msg):
     return None
     
 
-def extractChords(decoder, skey, wxflow_msg):
-    """Apply the decoder to the wxflow message. 
-    
+def extractChords(decoder, skey, wxflow_msg, test=False):
+    """
+    Apply the decoder to the wxflow message.
+
     It is assumed that the decoder matches the incoming message.
-    
+
     Arguments:
-    decoder    -- An entry from the 
+    decoder    -- An entry from the
     wxflow_msg -- The wxflow message object
-    
-    Returns: 
+
+    Returns:
       {
         "inst_id": "id",
         "vars": {
@@ -134,16 +135,17 @@ def extractChords(decoder, skey, wxflow_msg):
       }
     """
     retval = [{}]
-    
+
     # Create record 0
     i = 0
     if skey:
-        retval[i]["skey"] = skey 
+        retval[i]["skey"] = skey
     retval[i]["inst_id"] = decoder["_chords_inst_id"]
+    retval[i]["test"] = test
     retval[i]["vars"] = {}
-    
-    # look through all of the decoder keys. If they don't begin with 
-    # an underscore, they are candidates for extraction from the 
+
+    # look through all of the decoder keys. If they don't begin with
+    # an underscore, they are candidates for extraction from the
     # wxflow message. Add to record 0.
     for k in decoder:
         if k[0] != "_" and k != "obs":
@@ -152,12 +154,12 @@ def extractChords(decoder, skey, wxflow_msg):
                 # Direct decode from a wxflow field.
                 if k in wxflow_msg:
                     retval[0]["vars"][decoder[k]["chords_var"]] = wxflow_msg[k]
-    
+
     # If no varibles were created, get rid of this record.
     if len(retval[0]['vars']) == 0:
         retval = []
-    
-    # Now space through the obs records, creating a new CHORDS record for each one.
+
+    # Now space through additional obs records, creating a new CHORDS record for each one.
     # (I wonder if weatherflow will ever deliver more than one? Seems like an
     # odd schema.)
     if 'obs' in decoder and 'obs' in wxflow_msg:
@@ -165,47 +167,56 @@ def extractChords(decoder, skey, wxflow_msg):
             retval.append({})
             i = len(retval) - 1
             if skey:
-                retval[i]["skey"] = skey 
+                retval[i]["skey"] = skey
+            retval[i]["test"] = test
             retval[i]["inst_id"] = decoder["_chords_inst_id"]
             retval[i]["vars"] = {}
-            for index,var_name in decoder['obs']:
+            for index, var_name in decoder['obs']:
                 if index < len(ob):
                     retval[i]["vars"][var_name] = ob[index]
 
     return retval
-    
+
 
 def toChords(config, wxflow_msg):
-    """Use the config to convert a wxflow message to a CHORDS structure.
-    
+    """
+    Use the config to convert a wxflow message to a CHORDS structure.
+
     Arguments:
     config -- the wxflow decoding configuration.
     msg    -- a wxflow message object.
-    
+
     Returns:
     The CHORDS structure.
     """
-    
+
     # Initialize return
     chords_stuff = None
-    
+
     # Get the defined message types
     wxflow_decoders = config["wxflow_decoders"]
-    
+
     # Get the chords key
     if "skey" in config:
         skey = config["skey"]
     else:
         skey = None
-    
+
+    # Check for test
+    if "test" in config:
+        test = config["test"]
+    else:
+        test = False
+
     # Look for a match. A decoder is returned, if true.
     decoder = msgMatch(wxflow_decoders, wxflow_msg)
-    
+
     # If we got a decoder, there is a message match.
     if decoder:
         # Break CHORDS stuff out of the message.
-        chords_stuff = extractChords(decoder, skey, wxflow_msg)
-        
+        chords_stuff = extractChords(decoder=decoder, skey=skey, test=test,
+                                     wxflow_msg=wxflow_msg)
+
     return chords_stuff
 
 #####################################################################
@@ -218,19 +229,19 @@ if __name__ == '__main__':
         '{"serial_number":"AR-00005436","type":"obs_air","hub_sn":"HB-00004236","obs":[[1511405120,773.40,4.05,2,0,0,3.47,1],[1511405125,778.40,9.05,63,0,0,3.47,1]],"firmware_revision":20}'
         ]
 
-    if (len(sys.argv) != 2):
+    if len(sys.argv) != 2:
         print ("Usage:", sys.argv[0], "config_file")
         sys.exit(1)
-    
+
     config = loads(open(sys.argv[1]).read())
-     
+
     for jmsg in sample_msgs:
         # Convert json to an object
         wxflow = loads(jmsg)
         chords_stuff = toChords(config, wxflow)
-        
+
         if chords_stuff:
-            print (jmsg)
+            print(jmsg)
             for record in chords_stuff:
-                print (record)
+                print(record)
             print ("")
