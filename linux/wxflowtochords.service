@@ -1,10 +1,12 @@
 [Unit]
 Description=Wxflow to CHORDS Service
 After=network.target
+StartLimitIntervalSec=0
 
 [Service]
 User=pi
 Restart=always
+RestartSec=5
 Type=simple
 WorkingDirectory=/home/pi/WxflowToChords
 ExecStart=/usr/bin/python3 /home/pi/WxflowToChords/WxflowToChords.py /home/pi/WxflowToChords/wx.json
