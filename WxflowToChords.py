@@ -42,7 +42,7 @@ def run(config_file):
             if chords_records:
                 for chords_record in chords_records:
                     uri = tochords.buildURI(host, chords_record)
-                    tochords.submitURI(uri, 720)
+                    tochords.submitURI(uri, 2*60*24)
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
