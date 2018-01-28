@@ -1,16 +1,4 @@
 #! /usr/local/bin/python3
-#
-# # System modules
-import json
-import os
-import time
-import sys
-from gc import collect
-
-import FromWxflow
-import DecodeWxflow
-import pychords.tochords as tochords
-
 """
 Full stack routing of wxflow datagrams to a CHORDS instance.
 
@@ -19,7 +7,22 @@ DecodeWxflow, and ToChords. See each module for a description
 of the required configuration values.
 
 """
+
+# pylint: disable=C0103
+# pylint: disable=C0326
+import json
+import time
+import sys
+
+import FromWxflow
+import DecodeWxflow
+import pychords.tochords as tochords
+
+
 def run(config_file):
+    """
+    Run the complete process.
+    """
     print("Starting WxflowToChords with", config_file)
     config = json.loads(open(config_file).read())
     host   = config["chords_host"]
@@ -34,7 +37,7 @@ def run(config_file):
 
     while True:
         sys.stdout.flush()
-        sys.stderr.flush() 
+        sys.stderr.flush()
         time.sleep(1)
         wxflow_msgs = FromWxflow.get_msgs(verbose = verbose)
         for w in wxflow_msgs:
@@ -50,5 +53,5 @@ if __name__ == '__main__':
     if len(sys.argv) != 2:
         print ("Usage:", sys.argv[0], 'config_file')
         sys.exit (1)
-        
+
     run(sys.argv[1])

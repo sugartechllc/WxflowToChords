@@ -1,5 +1,6 @@
-from json import loads
-import sys
+# pylint: disable=C0103
+# pylint: disable=C0301
+# pylint: disable=C0326
 
 """
 Decode wxflow messages into CHORDS compatible data structures.
@@ -14,7 +15,7 @@ needed by other modules (e.g. FromWxflow and ToChords).
 
 The decoders list looks like:
 [
-  { 
+  {
     "_enabled": true,
     "_wxflow_type": "ObsAir",
     "_chords_inst_id": "1",
@@ -71,6 +72,10 @@ The decoders list looks like:
 ]
 """
 
+
+from json import loads
+import sys
+
 def msgMatch(wxflow_decoders, wxflow_msg):
     """See if the incoming message matches one of the match criteria.
 
@@ -84,13 +89,13 @@ def msgMatch(wxflow_decoders, wxflow_msg):
         "serial_number": "HB-00004236"
       }
     }
-    
+
     Arguments:
     wxflow_deciders: -- A list of wxfow message decoders.
     wxflow_msg       -- a wxflow message object.
-    
+
     Returns:
-    If a match, return the decoder. 
+    If a match, return the decoder.
     Otherwise, return None.
 
     """
@@ -107,12 +112,11 @@ def msgMatch(wxflow_decoders, wxflow_msg):
                     if wxflow_msg[k] != match_fields[k]:
                         matched = False
                         break
-    
+
             if matched:
                 return decoder
 
     return None
-    
 
 def extractChords(decoder, skey, wxflow_msg, test=False):
     """
@@ -156,7 +160,7 @@ def extractChords(decoder, skey, wxflow_msg, test=False):
                     retval[0]["vars"][decoder[k]["chords_var"]] = wxflow_msg[k]
 
     # If no varibles were created, get rid of this record.
-    if len(retval[0]['vars']) == 0:
+    if not retval[0]['vars']:
         retval = []
 
     # Now space through additional obs records, creating a new CHORDS record for each one.
@@ -178,7 +182,7 @@ def extractChords(decoder, skey, wxflow_msg, test=False):
     return retval
 
 
-def toChords(config, wxflow_msg):
+def toChords(wxflow_config, wxflow_msg):
     """
     Use the config to convert a wxflow message to a CHORDS structure.
 
@@ -191,20 +195,20 @@ def toChords(config, wxflow_msg):
     """
 
     # Initialize return
-    chords_stuff = None
+    chords_values = None
 
     # Get the defined message types
-    wxflow_decoders = config["wxflow_decoders"]
+    wxflow_decoders = wxflow_config["wxflow_decoders"]
 
     # Get the chords key
-    if "skey" in config:
-        skey = config["skey"]
+    if "skey" in wxflow_config:
+        skey = wxflow_config["skey"]
     else:
         skey = None
 
     # Check for test
-    if "test" in config:
-        test = config["test"]
+    if "test" in wxflow_config:
+        test = wxflow_config["test"]
     else:
         test = False
 
@@ -214,10 +218,10 @@ def toChords(config, wxflow_msg):
     # If we got a decoder, there is a message match.
     if decoder:
         # Break CHORDS stuff out of the message.
-        chords_stuff = extractChords(decoder=decoder, skey=skey, test=test,
-                                     wxflow_msg=wxflow_msg)
+        chords_values = extractChords(decoder=decoder, skey=skey, test=test,
+                                      wxflow_msg=wxflow_msg)
 
-    return chords_stuff
+    return chords_values
 
 #####################################################################
 if __name__ == '__main__':
