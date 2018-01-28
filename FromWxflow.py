@@ -39,7 +39,7 @@ def msg_capture(port):
             print ("Error in msg_capture:", err_no, e)
 
 
-def get_msgs():
+def get_msgs(verbose = False):
     '''Return a list containing new messages. 
     
     If none are available, the list is empty.
@@ -50,7 +50,10 @@ def get_msgs():
     msg_list = []
     wxflow_msg_queue_lock.acquire()
     for m in wxflow_msg_queue:
-        msg_list.append(wxflow_msg_queue.pop(0).decode('UTF-8'))
+        msg = wxflow_msg_queue.pop(0).decode('UTF-8')
+        msg_list.append(msg)
+        if verbose:
+            print(msg)
     wxflow_msg_queue_lock.release()
     return msg_list
 

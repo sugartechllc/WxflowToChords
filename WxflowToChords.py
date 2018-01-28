@@ -24,17 +24,19 @@ def run(config_file):
     config = json.loads(open(config_file).read())
     host   = config["chords_host"]
     port   = config["listen_port"]
+    if "verbose" in config:
+        verbose = config["verbose"]
+    else:
+        verbose = verbose = False
 
     FromWxflow.startReader(port)
     tochords.startSender()
 
     while True:
-
-        collect()
         sys.stdout.flush()
         sys.stderr.flush() 
         time.sleep(1)
-        wxflow_msgs = FromWxflow.get_msgs()
+        wxflow_msgs = FromWxflow.get_msgs(verbose = verbose)
         for w in wxflow_msgs:
             wxflow_msg = json.loads(w)
             chords_records = DecodeWxflow.toChords(config, wxflow_msg)
