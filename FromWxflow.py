@@ -35,7 +35,7 @@ def msg_capture(port):
     sock.bind(('', port))
     while True:
         try:
-            jbytes, addr = sock.recvfrom(200)
+            jbytes, addr = sock.recvfrom(1000)
             wxflow_msg_queue_lock.acquire()
             wxflow_msg_queue.append(jbytes)
             wxflow_msg_queue_lock.release()
