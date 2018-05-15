@@ -56,6 +56,31 @@
           "sensor_status": {
             "chords_var": "statair"
           }
-        }
+        },
+        {
+	  "_enabled": true,
+  	  "_wxflow_type": "ObsSky",
+	  "_chords_inst_id": "2",
+	  "_match": {
+	    "type": "obs_sky",
+	    "serial_number": "SK-00008875"
+	  },
+   	  "obs":[
+    	      [0, "at"],
+              [1, "illum"],
+              [2, "uv"],
+              [3, "rain"],
+              [4, "wind_lull"],
+              [5, "wind_avg"],
+              [6, "wind_gust"],
+              [7, "wind_dir"],
+              [8, "vbat"],
+              [9, "rep_int"],
+              [10,"solar"],
+              [11,"rain_day"],
+              [12,"precip_typ"],
+              [13,"wind_int"]
+            ]
+	}
       ]
     }
