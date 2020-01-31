@@ -1,8 +1,16 @@
 # WxflowToChords README
 
+Create a configuration file. [This file](sample_config.json) provides a template.
+
+Run _WxflowToChords_. The configuration file name is the single parameter:
 ```
 python3 WxflowToChords config.json
 ```
+
+Of course, when you log off, the process will stop, so you may wish to run it it with _nohup_.
+
+Any time the system is rebooted, you will need to restart it. You can get around this by
+setting up and enabling a service definition approprate for your operating system.
 
 ## About
 WxflowToChords are a set of python modules for converting Weatherflow json formatted datagrams into the CHORDS
