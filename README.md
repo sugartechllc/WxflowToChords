@@ -231,7 +231,7 @@ Example processing, showing the wxflow datagram followed by the CHORDS structure
 }
 ```
 
-## Micropython Notes
+## Micropython Notes (Deprecated)
 I tried to get this working on a WiPy. It would run for indeterminate periods, and then throw
 OSError exceptions in the urequests code. After this, the networking would not work until after a reboot.
 So, I ripped out the WiPy specifics, andd transfered the project to a Raspberry Pi Zero W. Here
