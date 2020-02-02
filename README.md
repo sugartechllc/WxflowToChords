@@ -7,7 +7,7 @@ Run _WxflowToChords_. The configuration file name is the single parameter:
 python3 WxflowToChords config.json
 ```
 
-Of course, when you log off, the process will stop, so you may wish to run it it with _nohup_.
+Of course, when you log off, the process will stop, so you may wish to run it it with ```nohup python3 WxflowToChords config.json &```.
 
 Any time the system is rebooted, you will need to restart WxflowToChords. You can get around this by
 setting up and enabling a service approprate for your operating system. A
