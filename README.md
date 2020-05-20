@@ -250,10 +250,10 @@ Example processing, showing the wxflow datagram followed by the CHORDS structure
    was the current debian O/S; be sure to use this one or later.
 
 1. Install [balenaEtcher](https://www.balenaEtcher.io), and use it to flash the
-    image to a 16GB micro-SD card.
+   image to a 8GB micro-SD card.
 
 1. ssh is not enabled by default. Enable it by mounting the flashed
-  SD card, and add a file named _ssh_ in the top directory. On MacOS, it's:
+   SD card, and add a file named _ssh_ in the top directory. On MacOS, it's:
 
         touch /Volumes/boot/ssh
 
