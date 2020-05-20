@@ -257,7 +257,7 @@ Example processing, showing the wxflow datagram followed by the CHORDS structure
 
         touch /Volumes/boot/ssh
 
-1. You can enable wifi connection an access point at initial boot,
+1. You can enable wifi connection to an access point at initial boot,
    by creating a wifi configuration and placing it in _wpa_supplicant.conf_.
    You can set this up ahead of time; otherwise you can connect over ethernet and
    use _raspi-config_ to automatically attach to the access point.
