@@ -5,6 +5,9 @@ python3 WxflowToChords config.json
 ```
 
 ## About
+
+(See _Raspbian Installation_ below for O/S installation instructions).
+
 WxflowToChords are a set of python modules for converting Weatherflow json formatted datagrams into the CHORDS
 REST api, and submitting the data to a [CHORDS portal](http://chordsrt.com).
 
@@ -231,7 +234,44 @@ Example processing, showing the wxflow datagram followed by the CHORDS structure
 }
 ```
 
-## Micropython Notes
+## Raspbian Installation
+
+1. Download [raspbian](https://downloads.raspberrypi.org/raspbian_lite_latest). Buster
+   was the current debian O/S; be sure to use this one or later.
+
+1. Install [balenaEtcher](https://www.balenaEtcher.io), and use it to flash the
+    image to a 16GB micro-SD card.
+
+1. ssh is not enabled by default. Enable it by mounting the flashed
+  SD card, and add a file named _ssh_ in the top directory. On MacOS, it's:
+
+        touch /Volumes/boot/ssh
+
+1. You can enable wifi connection an access point at initial boot,
+   by creating a wifi configuration and placing it in _wpa_supplicant.conf_.
+   You can set this up ahead of time; otherwise you can connect over ethernet and
+   use _raspi-config_ to automatically attach to the access point.
+
+   To pre-configure wifi access to an existing access point, create _boot/wpa_supplicant.conf_:
+
+        country=US
+        ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+        update_config=1
+        network={
+          ssid="NETWORK-NAME"
+          psk="NETWORK-PASSWORD"
+        }
+
+1. Power up the Pi *(with an Ethernet connection if wifi was not pre-configuerd)*, and ssh in:
+
+        ssh pi@raspberrypi  # password raspberry
+
+1. Configure the system name (and possibly the wifi network) using the configuration tool:
+
+        sudo raspi-config
+
+
+## Micropython Notes (Deprecated)
 I tried to get this working on a WiPy. It would run for indeterminate periods, and then throw
 OSError exceptions in the urequests code. After this, the networking would not work until after a reboot.
 So, I ripped out the WiPy specifics, andd transfered the project to a Raspberry Pi Zero W. Here
