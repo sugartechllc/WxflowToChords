@@ -30,7 +30,7 @@ def run(config_file):
     if "verbose" in config:
         verbose = config["verbose"]
     else:
-        verbose = verbose = False
+        verbose = False
 
     FromWxflow.startReader(port)
     tochords.startSender()
