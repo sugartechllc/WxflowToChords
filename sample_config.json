@@ -1,86 +1,108 @@
 {
-      "chords_host": "chords_host.com",
-      "listen_port": 50222,
-      "skey": "123456",
-      "wxflow_decoders": [
-        { 
-          "_enabled": true,
-          "_wxflow_type": "ObsAir",
-          "_chords_inst_id": "1",
-          "_match": {
-            "type": "obs_air",
-            "serial_number": "AR-00005436"
-          },
-          "obs":[
-              [0, "at"],
-              [1, "pres"],
-              [2, "tdry"],
-              [3, "rh"],
-              [4, "lcount"],
-              [5, "ldist"],
-              [6, "vbat"]
-            ]
-        },
-        {
-          "_enabled": true,
-          "_wxflow_type": "HubStatus",
-          "_chords_inst_id": "1",
-          "_match": {
-            "type": "hub_status",
-            "serial_number": "HB-00004236"
-          },
-          "timestamp": {
-            "chords_var": "at"
-          },
-          "rssi" :{
-            "chords_var": "rssihub"
-          }
-        },
-        {
-          "_enabled": true,
-          "_wxflow_type": "StationStatus",
-          "_chords_inst_id": "1",
-          "_match": {
-            "type": "station_status",
-            "serial_number": "AR-00005436"
-          },
-          "timestamp": {
-            "chords_var": "at"
-          },
-          "voltage": {
-              "chords_var": "vair"
-          },
-          "rssi": {
-            "chords_var": "rssiair"
-          },
-          "sensor_status": {
-            "chords_var": "statair"
-          }
-        },
-        {
-	  "_enabled": true,
-  	  "_wxflow_type": "ObsSky",
-	  "_chords_inst_id": "2",
-	  "_match": {
-	    "type": "obs_sky",
-	    "serial_number": "SK-00008875"
-	  },
-   	  "obs":[
-    	      [0, "at"],
-              [1, "illum"],
-              [2, "uv"],
-              [3, "rain"],
-              [4, "wind_lull"],
-              [5, "wind_avg"],
-              [6, "wind_gust"],
-              [7, "wind_dir"],
-              [8, "vbat"],
-              [9, "rep_int"],
-              [10,"solar"],
-              [11,"rain_day"],
-              [12,"precip_typ"],
-              [13,"wind_int"]
-            ]
-	}
-      ]
+  "verbose": false,
+  "chords_host": "chords_host.com",
+  "listen_port": 50222,
+  "skey": "123456",
+  "wxflow_decoders": [
+    { 
+      "_enabled": true,
+      "_wxflow_type": "ObsAir",
+      "_chords_inst_id": "1",
+      "_match": {
+        "type": "obs_air",
+        "serial_number": "AR-00005436"
+      },
+      "obs":[
+          [0, "at"],
+          [1, "pres"],
+          [2, "tdry"],
+          [3, "rh"],
+          [4, "lcount"],
+          [5, "ldist"],
+          [6, "vbat"]
+        ]
+    },
+{
+"_enabled": true,
+  "_wxflow_type": "ObsSky",
+"_chords_inst_id": "4",
+"_match": {
+  "type": "obs_sky",
+  "serial_number": "SK-00008875"
+},
+   "obs":[
+        [0, "at"],
+          [1, "illum"],
+          [2, "uv"],
+          [3, "rain"],
+          [4, "wind_lull"],
+          [5, "wind_avg"],
+          [6, "wind_gust"],
+          [7, "wind_dir"],
+          [8, "vbat"],
+          [9, "rep_int"],
+          [10,"solar"],
+          [11,"rain_day"],
+          [12,"precip_typ"],
+          [13,"wind_int"]
+        ]
+},
+    {
+      "_enabled": false,
+      "_wxflow_type": "HubStatus",
+      "_chords_inst_id": "1",
+      "_match": {
+        "type": "hub_status",
+        "serial_number": "HB-00004236"
+      },
+      "timestamp": {
+        "chords_var": "at"
+      },
+      "rssi" :{
+        "chords_var": "rssihub"
+      }
+    },
+    {
+      "_enabled": true,
+      "_wxflow_type": "DeviceStatus",
+      "_chords_inst_id": "1",
+      "_match": {
+        "type": "device_status",
+        "serial_number": "AR-00005436"
+      },
+      "timestamp": {
+        "chords_var": "at"
+      },
+      "voltage": {
+          "chords_var": "vair"
+      },
+      "rssi": {
+        "chords_var": "rssiair"
+      },
+      "sensor_status": {
+        "chords_var": "statair"
+      }
+    },
+    {
+      "_enabled": true,
+      "_wxflow_type": "DeviceStatus",
+      "_chords_inst_id": "4",
+      "_match": {
+        "type": "device_status",
+        "serial_number": "SK-00008875"
+      },
+      "timestamp": {
+        "chords_var": "at"
+      },
+      "voltage": {
+          "chords_var": "vsky"
+      },
+      "rssi": {
+        "chords_var": "rssisky"
+      },
+      "sensor_status": {
+        "chords_var": "statsky"
+      }
     }
+  ]
+}
