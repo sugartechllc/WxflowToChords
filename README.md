@@ -1,8 +1,17 @@
 # WxflowToChords README
 
+Create a configuration file. [This file](sample_config.json) provides a template.
+
+Run _WxflowToChords_. The configuration file name is the single parameter:
 ```
 python3 WxflowToChords config.json
 ```
+
+Of course, when you log off, the process will stop, so you may wish to run it it with ```nohup python3 WxflowToChords config.json &```.
+
+Any time the system is rebooted, you will need to restart WxflowToChords. You can get around this by
+setting up and enabling a service approprate for your operating system. A
+sample systemd service definition file is provided [here](linux/wxflowtochords.service).
 
 ## About
 WxflowToChords are a set of python modules for converting Weatherflow json formatted datagrams into the CHORDS
@@ -231,7 +240,7 @@ Example processing, showing the wxflow datagram followed by the CHORDS structure
 }
 ```
 
-## Micropython Notes
+## Micropython Notes (Deprecated)
 I tried to get this working on a WiPy. It would run for indeterminate periods, and then throw
 OSError exceptions in the urequests code. After this, the networking would not work until after a reboot.
 So, I ripped out the WiPy specifics, andd transfered the project to a Raspberry Pi Zero W. Here
