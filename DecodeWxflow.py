@@ -118,7 +118,21 @@ def msgMatch(wxflow_decoders, wxflow_msg):
 
     return None
 
-def extractChords(decoder, skey, wxflow_msg, test=False):
+def chords_auth_keys(wxflow_config):
+    # Get the chords authentication parameters
+    keys = {}
+
+    if "skey" in wxflow_config:
+        keys["skey"] = wxflow_config["skey"]
+    if "api_email" in wxflow_config:
+        keys["api_email"] = wxflow_config["api_email"]
+    if "api_key" in wxflow_config:
+        keys["api_key"] = wxflow_config["api_key"]
+    
+    return keys
+  
+
+def extractChords(decoder, auth_keys, wxflow_msg, test=False):
     """
     Apply the decoder to the wxflow message.
 
@@ -142,8 +156,8 @@ def extractChords(decoder, skey, wxflow_msg, test=False):
 
     # Create record 0
     i = 0
-    if skey:
-        retval[i]["skey"] = skey
+    # Inialize the dict with the authorization keys.
+    retval[i] = auth_keys
     retval[i]["inst_id"] = decoder["_chords_inst_id"]
     retval[i]["test"] = test
     retval[i]["vars"] = {}
@@ -170,8 +184,8 @@ def extractChords(decoder, skey, wxflow_msg, test=False):
         for ob in wxflow_msg['obs']:
             retval.append({})
             i = len(retval) - 1
-            if skey:
-                retval[i]["skey"] = skey
+            # Inialize the dict with the authorization keys.
+            retval[i] = auth_keys
             retval[i]["test"] = test
             retval[i]["inst_id"] = decoder["_chords_inst_id"]
             retval[i]["vars"] = {}
@@ -200,11 +214,7 @@ def toChords(wxflow_config, wxflow_msg):
     # Get the defined message types
     wxflow_decoders = wxflow_config["wxflow_decoders"]
 
-    # Get the chords key
-    if "skey" in wxflow_config:
-        skey = wxflow_config["skey"]
-    else:
-        skey = None
+    auth_keys = chords_auth_keys(wxflow_config)
 
     # Check for test
     if "test" in wxflow_config:
@@ -218,7 +228,7 @@ def toChords(wxflow_config, wxflow_msg):
     # If we got a decoder, there is a message match.
     if decoder:
         # Break CHORDS stuff out of the message.
-        chords_values = extractChords(decoder=decoder, skey=skey, test=test,
+        chords_values = extractChords(decoder=decoder, auth_keys=auth_keys, test=test,
                                       wxflow_msg=wxflow_msg)
 
     return chords_values

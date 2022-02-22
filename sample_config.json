@@ -3,6 +3,8 @@
   "chords_host": "chords_host.com",
   "listen_port": 50222,
   "skey": "123456",
+  "api_email": "email",
+  "api_key": "api key",
   "wxflow_decoders": [
     { 
       "_enabled": true,
