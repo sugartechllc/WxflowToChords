@@ -13,12 +13,11 @@ Set the following items in the configuration file:
 |Both   |"chords_host"|The IP name of the CHORDS server.|
 |Both   |"api_email"|The user login email for the CHORDS portal.|
 |Both   |"api_key"  |The user api_key for the CHORDS portal.|
-|Both   |HubStatus "serial_number"|change "HB_xxxxxxxx" to the correct Hub serial number".|
+|Both   |HubStatus "serial_number"|change "HB_xxxxxxxx" to the correct Hub serial number.|
 |Both   |"_chords_inst_id"|The CHORDS instrument id for your WeatherFlow device. There will be multiple occurances of this identifier.|
-|Tempest|ObsTempest "serial_number"|change "ST_xxxxxxxx" to the correct Tempest serial number". There will be multiple occurances of this identifier.|
-|Air/Sky|ObsSky "serial_number"|change "SK_xxxxxxxx" to the correct Sky serial number". There will be multiple occurances of this identifier.|
-|AirSky|ObsTempest "serial_number"|change "AR_xxxxxxxx" to the correct Air serial number".|
-
+|Tempest|ObsTempest "serial_number"|change "ST_xxxxxxxx" to the correct Tempest serial number. There will be multiple occurances of this identifier.|
+|Air/Sky|ObsSky "serial_number"|change "SK_xxxxxxxx" to the correct Sky serial number. There will be multiple occurances of this identifier.|
+|AirSky|ObsTempest "serial_number"|change "AR_xxxxxxxx" to the correct Air serial number.|
 
 Run _WxflowToChords_. The configuration file name is the single parameter:
 
@@ -42,7 +41,7 @@ REST api, and submitting the data to a [CHORDS portal](http://chordsrt.com).
 There are four python modules:
 * FromWxflow: Capture datagrams and put them in a queue. This is multithreaded, so that datagram reading
   can occur in parallel with other processing.
-* DecodeWxflow: Translate the wxflow messages into structured data matching the CHORDS REST api. A 
+* DecodeWxflow: Translate the wxflow messages into structured data matching the CHORDS REST api. A
   JSON based configuration specifies the translation.
 * ToChords: Send the structured data to a CHORDS portal. This is multithreaded, so that http writing
   can occur in parallel with other processing. The same JSON configuration provides other information for
@@ -71,7 +70,7 @@ can be located by identifier.
 
 For example:
 
-```
+```json
 {
   "serial_number":"HB-00000001",
   "type":"hub_status",
@@ -83,7 +82,8 @@ For example:
   "stack": "1616,1608"
 }
 ```
-```
+
+```json
 {
   "serial_number": "SK-00008453",
   "type":"rapid_wind",
@@ -92,7 +92,8 @@ For example:
   "obs":[1493322445,2.3,128]
 }
 ```
-```
+
+```json
 {
   "serial_number": "AR-00004049",
   "type": "device_status",
@@ -105,6 +106,7 @@ For example:
   "sensor_status": 0
 }
 ```
+
 The WeatherFlow documentation seems to be in flux, so be sure to capture some datagrams
 to verify what they are transmitting.
 
@@ -112,7 +114,8 @@ to verify what they are transmitting.
 
 This module captures the broadcast datagrams from the weather station hub. It requires a
 JSON configuration file containing:
-```
+
+```json
 {
   "listen_port": 5022
 }
@@ -138,7 +141,8 @@ route the elements of an wxflow `obs` array.
 
 If a CHORDS variable is identified as `at`, it will be converted to a timestamp and used for
 the `at=` timestamp.
-```
+
+```json
 {
   "chords_host": "chords_host.com",
   "listen_port": 50222,
@@ -202,19 +206,22 @@ the `at=` timestamp.
   ]
 }
 ```
+
 ## ToChords
 
 This module takes the CHORDS data structure, reformats it as a URL, and sents it to a CHORDS instance as
 an http GET. There are two steps in this process, to bulid the URL and then submit it for transmission. This can be seen in 
 `WxflowToChords`:
-```
+
+```json
   uri = ToChords.buildURI(host, chords_record)
   ToChords.submitURI(uri)
 ```
 
 `ToChords` requires a JSON configuration file containing the host name for the CHORDS instance, and the access key
 that is included in the GET.
-```
+
+```json
 {
   "chords_host": "chords_host.com",
   "skey": "key"
@@ -226,7 +233,8 @@ that is included in the GET.
 This module strings the three preceding ones together. It's the best place to see how the modules work.
 
 Example processing, showing the wxflow datagram followed by the CHORDS structured data:
-```
+
+```json
 {"serial_number":"HB-00004236","type":"hub_status","firmware_version":"26","uptime":88638,"rssi":-58,"timestamp":1511456148,"reset_flags":503316482}
 {
   "inst_id": "1",
@@ -308,7 +316,8 @@ version is not bug-for-bug identical to the micropython board that I have been u
 [WiPy](https://pycom.io/hardware/wipy-3-0-specs/), and so this will only get you soo far.
 
 The general idea for bringing up micropython on macOS:
-```
+
+```json
 brew install libffi
 git clone --recurse https://github.com/micropython/micropython.git
 cd micropython/ports/unix
