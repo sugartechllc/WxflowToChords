@@ -2,9 +2,8 @@
   "verbose": false,
   "chords_host": "chords_host.com",
   "listen_port": 50222,
-  "skey": "123456",
-  "api_email": "email",
-  "api_key": "api key",
+  "api_email": "CHORDS server registration email",
+  "api_key": "CHORDS server api key for the email",
   "wxflow_decoders": [
     { 
       "_enabled": true,
@@ -12,7 +11,7 @@
       "_chords_inst_id": "1",
       "_match": {
         "type": "obs_air",
-        "serial_number": "AR-00005436"
+        "serial_number": "AR-xxxxxxxx"
       },
       "obs":[
           [0, "at"],
@@ -27,10 +26,10 @@
 {
 "_enabled": true,
   "_wxflow_type": "ObsSky",
-"_chords_inst_id": "4",
+"_chords_inst_id": "1000",
 "_match": {
   "type": "obs_sky",
-  "serial_number": "SK-00008875"
+  "serial_number": "SK-xxxxxxxx"
 },
    "obs":[
         [0, "at"],
@@ -52,10 +51,10 @@
     {
       "_enabled": false,
       "_wxflow_type": "HubStatus",
-      "_chords_inst_id": "1",
+      "_chords_inst_id": "1000",
       "_match": {
         "type": "hub_status",
-        "serial_number": "HB-00004236"
+        "serial_number": "HB-xxxxxxxx"
       },
       "timestamp": {
         "chords_var": "at"
@@ -67,10 +66,10 @@
     {
       "_enabled": true,
       "_wxflow_type": "DeviceStatus",
-      "_chords_inst_id": "1",
+      "_chords_inst_id": "1000",
       "_match": {
         "type": "device_status",
-        "serial_number": "AR-00005436"
+        "serial_number": "AR-xxxxxxxx"
       },
       "timestamp": {
         "chords_var": "at"
@@ -88,10 +87,10 @@
     {
       "_enabled": true,
       "_wxflow_type": "DeviceStatus",
-      "_chords_inst_id": "4",
+      "_chords_inst_id": "1000",
       "_match": {
         "type": "device_status",
-        "serial_number": "SK-00008875"
+        "serial_number": "SK-xxxxxxxx"
       },
       "timestamp": {
         "chords_var": "at"

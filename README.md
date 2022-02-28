@@ -1,14 +1,32 @@
 # WxflowToChords README
 
-Create a configuration file. [This file](sample_config.json) provides a template.
+This project provides a Python application for capturing the UDP packets that are emitted by a [WeatherFlow](weatherflow.com/tempest-weather-system/) Sky/Air or Tempest system hub, and transferring the data to a [CHORDS data server](chordsrt.com).
+## Quickstart
+
+Note that the CHORDS system administrator must enable measurements, data downloading, and data viewing for the registered CHORDS user.
+
+Create a _WxflowToChords/wx.json_ configuration file. Templates are provided for [Tempest](sample_tempest_config.json) and [Air/Sky](sample_air_sky_config.json) WeatherFlow systems.
+
+Set the following items in the configuration file:
+|System Type|Identifier|Value|
+|-------|----------|-----|
+|Both   |"chords_host"|The IP name of the CHORDS server.|
+|Both   |"api_email"|The user login email for the CHORDS portal.|
+|Both   |"api_key"  |The user api_key for the CHORDS portal.|
+|Both   |HubStatus "serial_number"|change "HB_xxxxxxxx" to the correct Hub serial number".|
+|Both   |"_chords_inst_id"|The CHORDS instrument id for your WeatherFlow device. There will be multiple occurances of this identifier.|
+|Tempest|ObsTempest "serial_number"|change "ST_xxxxxxxx" to the correct Tempest serial number". There will be multiple occurances of this identifier.|
+|Air/Sky|ObsSky "serial_number"|change "SK_xxxxxxxx" to the correct Sky serial number". There will be multiple occurances of this identifier.|
+|AirSky|ObsTempest "serial_number"|change "AR_xxxxxxxx" to the correct Air serial number".|
+
 
 Run _WxflowToChords_. The configuration file name is the single parameter:
 
-        python3 WxflowToChords config.json
+        python3 WxflowToChords wx.json
 
 Of course, when you log off, the process will stop, so you may wish to run it it as:
 
-        nohup python3 WxflowToChords config.json &
+        nohup python3 WxflowToChords wx.json &
 
 Any time the system is rebooted, you will need to restart WxflowToChords. You can get around this by
 setting up and enabling a service approprate for your operating system. A
@@ -16,7 +34,7 @@ sample systemd service definition file is provided [here](linux/wxflowtochords.s
 
 ## About
 
-(See _Raspbian Installation_ below for O/S installation instructions).
+(See _Raspbian Installation_ below for installation instructions on an RPi).
 
 WxflowToChords are a set of python modules for converting Weatherflow json formatted datagrams into the CHORDS
 REST api, and submitting the data to a [CHORDS portal](http://chordsrt.com).
@@ -36,10 +54,11 @@ configuration for all modules, or a file can be created for just the items neede
 
 Each module will run a test case if it is invoked individually.
 
-This code will be run on both regular computers, and micropython systems such as the Raspberry Pi Zero W. 
-The code has been testyed against python3 on MacOS and Raspian Lite.
+This code will be run on both regular computers, and systems such as the Raspberry Pi Zero W. 
+The code has been tested against python3 on MacOS and Raspbian Bullseye Lite.
 
 ## Weatherflow JSON Schema
+
 Input data is structured according to the Weatherflow 
 [UDP JSON schema](https://weatherflow.github.io/SmartWeather/api/udp.html).
 Messages have  a`type` field identifying the type of message,
@@ -90,6 +109,7 @@ The WeatherFlow documentation seems to be in flux, so be sure to capture some da
 to verify what they are transmitting.
 
 ## FromWxflow
+
 This module captures the broadcast datagrams from the weather station hub. It requires a
 JSON configuration file containing:
 ```
@@ -99,6 +119,7 @@ JSON configuration file containing:
 ```
 
 ## DecodeWxflow
+
 A JSON structure defines the mapping between the wxflow input data and the CHORDS portal api.
 A collection of wxflow decoders are defined (`wxflow_decoders`), for each message that is
 to be translated. Each one contains a list of 
@@ -121,12 +142,8 @@ the `at=` timestamp.
 {
   "chords_host": "chords_host.com",
   "listen_port": 50222,
-  "skey": "123456",
-  "wipy_report: {
-    "_enabled": true,
-    "_chords_inst_id" : "1",
-    "_battv" : "wipyv"
-  },
+  "api_email": "my_chords_registered_email@gmail.com",
+  "api_key": "inscrutableapikey",
   "wxflow_decoders": [
     { 
       "_enabled": true,
@@ -186,6 +203,7 @@ the `at=` timestamp.
 }
 ```
 ## ToChords
+
 This module takes the CHORDS data structure, reformats it as a URL, and sents it to a CHORDS instance as
 an http GET. There are two steps in this process, to bulid the URL and then submit it for transmission. This can be seen in 
 `WxflowToChords`:
@@ -204,6 +222,7 @@ that is included in the GET.
 ```
 
 ## WxflowToChords
+
 This module strings the three preceding ones together. It's the best place to see how the modules work.
 
 Example processing, showing the wxflow datagram followed by the CHORDS structured data:
@@ -246,48 +265,34 @@ Example processing, showing the wxflow datagram followed by the CHORDS structure
 
 ## Raspbian Installation
 
-1. Download [raspbian](https://downloads.raspberrypi.org/raspbian_lite_latest). Buster
-   was the current debian O/S; be sure to use this one or later.
+This method is used to install Raspbian on a headless Raspberry Pi Zero W.
 
-1. Install [balenaEtcher](https://www.balenaEtcher.io), and use it to flash the
-   image to a 8GB micro-SD card.
+1. Get and run the latest RPi imager release download from GitHub: https://github.com/raspberrypi/rpi-imager
 
-1. ssh is not enabled by default. Enable it by mounting the flashed
-   SD card, and add a file named _ssh_ in the top directory. On MacOS, it's:
+1. Hit shift-cmd-x to enable headless setup.
 
-        touch /Volumes/boot/ssh
+1. Use the settings menu to set:
+    * Wifi
+    * Ssh enabled (via password)
+    * Hostname (e.g. wxflow)
 
-1. You can enable wifi connection to an access point at initial boot,
-   by creating a wifi configuration and placing it in _wpa_supplicant.conf_.
-   You can set this up ahead of time; otherwise you can connect over ethernet and
-   use _raspi-config_ to automatically attach to the access point.
+1. Select raspbian 32 bit lite (for arm6/arm7 systems).
 
-   To pre-configure wifi access to an existing access point, create _boot/wpa_supplicant.conf_:
+1. Write!
 
-        country=US
-        ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
-        update_config=1
-        network={
-          ssid="NETWORK-NAME"
-          psk="NETWORK-PASSWORD"
-        }
+1. Boot up
 
-1. Power up the Pi *(with an Ethernet connection if wifi was not pre-configuerd)*, and ssh in:
-
-        ssh pi@raspberrypi  # password raspberry
-
-1. Configure the system name (and possibly the wifi network) using the configuration tool:
-
-        sudo raspi-config
-
+1. ssh in, pull _WxflowToChords_, and configure as described above.
 
 ## Micropython Notes (Deprecated)
+
 I tried to get this working on a WiPy. It would run for indeterminate periods, and then throw
 OSError exceptions in the urequests code. After this, the networking would not work until after a reboot.
-So, I ripped out the WiPy specifics, andd transfered the project to a Raspberry Pi Zero W. Here
+So, I ripped out the WiPy specifics, and transfered the project to a Raspberry Pi Zero W. Here
 are a few thoings learned while working with the WiPy.
 
 ### General
+
 Micropython is a slimmed down embedded version of python. The Ur-project seems to
 be [micropython.org](http://micropython.org), but i have [learned](https://forum.pycom.io/topic/2256/macos-firmware-updater-out-of-date)
 that many device developers (pycom, adafruit, microbit) have forked this project, and incompatibilities
@@ -295,6 +300,7 @@ may exist. It seems that most of the customizations are related to the particula
 that doesn't mean that they will track the micropython.org releases.
 
 ### On macOS
+
 The goal is to have this running on a micropython embedded system. Fortunately, there is
 a micropython implmentation for Linux, macOS and Windows. This has been useful for testing
 the code apart from the embedded hardware. However, my experieince has been that the macOS

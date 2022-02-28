@@ -1,0 +1,80 @@
+{     
+  "verbose": false,
+  "chords_host": "chords_host.com",
+  "listen_port": 50222,
+  "api_email": "CHORDS server registration email",
+  "api_key": "CHORDS server api key for the email",
+"wxflow_decoders": [
+    {
+      "_enabled": true,
+      "_wxflow_type": "ObsTempest",
+      "_chords_inst_id": "1000",
+      "_match": {
+        "type": "obs_st",
+        "serial_number": "ST-xxxxxxxx"
+      },
+      "obs":[
+          [0,  "at"],
+          [1,  "wind_lull"],
+          [2,  "wind_avg"],
+          [3,  "wind_gust"],
+          [4,  "wind_dir"],
+          [5,  "wind_int"],
+          [6,  "pres"],
+          [7,  "tdry"],
+          [8,  "rh"],
+          [9,  "illum"],
+          [10, "uv"],
+          [11, "solar"],
+          [12, "rain"],
+          [13, "precip_typ"],
+          [14, "ldist"],
+          [15, "lcount"],
+          [16, "vbat"],
+          [17, "rep_int"]
+        ]
+    },
+    {
+      "_enabled": false,
+      "_wxflow_type": "HubStatus",
+      "_chords_inst_id": "1000",
+      "_match": {
+        "type": "hub_status",
+        "serial_number": "HB-xxxxxxxx"
+      },
+      "timestamp": {
+        "chords_var": "at"
+      },
+      "rssi" :{
+        "chords_var": "rssihub"
+      }
+    },
+    {
+      "_enabled": true,
+      "_wxflow_type": "DeviceStatus",
+      "_chords_inst_id": "1000",
+      "_match": {
+        "type": "device_status",
+        "serial_number": "ST-xxxxxxxx"
+      },
+      "timestamp": {
+        "chords_var": "at"
+      },
+      "voltage": {
+          "chords_var": "vst"
+      },
+      "rssi": {
+        "chords_var": "rssist"
+      },
+      "sensor_status": {
+        "chords_var": "statst"
+      },
+      "hub_rssi": {
+        "chords_var": "rssihub"
+      },
+      "uptime": {
+        "chords_var": "uptime"
+      }
+    }
+  ]
+}
