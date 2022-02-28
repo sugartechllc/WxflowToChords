@@ -8,7 +8,7 @@
     { 
       "_enabled": true,
       "_wxflow_type": "ObsAir",
-      "_chords_inst_id": "1",
+      "_chords_inst_id": "1000",
       "_match": {
         "type": "obs_air",
         "serial_number": "AR-xxxxxxxx"
@@ -23,16 +23,16 @@
           [6, "vbat"]
         ]
     },
-{
-"_enabled": true,
-  "_wxflow_type": "ObsSky",
-"_chords_inst_id": "1000",
-"_match": {
-  "type": "obs_sky",
-  "serial_number": "SK-xxxxxxxx"
-},
-   "obs":[
-        [0, "at"],
+    {
+      "_enabled": true,
+        "_wxflow_type": "ObsSky",
+      "_chords_inst_id": "1000",
+      "_match": {
+        "type": "obs_sky",
+        "serial_number": "SK-xxxxxxxx"
+      },
+      "obs":[
+          [0, "at"],
           [1, "illum"],
           [2, "uv"],
           [3, "rain"],
@@ -46,8 +46,8 @@
           [11,"rain_day"],
           [12,"precip_typ"],
           [13,"wind_int"]
-        ]
-},
+      ]
+    },
     {
       "_enabled": false,
       "_wxflow_type": "HubStatus",
