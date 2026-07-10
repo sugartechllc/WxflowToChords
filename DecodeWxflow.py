@@ -77,7 +77,7 @@ from json import loads
 import sys
 
 def msgMatch(wxflow_decoders, wxflow_msg):
-    """See if the incoming message matches one of the match criteria.
+    """See which incoming message matches one or more of the match criteria.
 
     wxflow_decoders: a collection of wxflow message dictionaries,
     each containing at least a dictionary entry "_match",
@@ -90,33 +90,36 @@ def msgMatch(wxflow_decoders, wxflow_msg):
       }
     }
 
+    Multiple decoders may match the same message (e.g. splitting a
+    single wxflow message across several CHORDS instrument ids), so
+    all matches are returned.
+
     Arguments:
     wxflow_deciders: -- A list of wxfow message decoders.
     wxflow_msg       -- a wxflow message object.
 
     Returns:
-    If a match, return the decoder.
-    Otherwise, return None.
+    A list of matching decoders. Empty if there are no matches.
 
     """
-     # Iterate through the criteria, looking for a match
+    matches = []
+
+    # Iterate through the criteria, looking for matches
     for decoder in wxflow_decoders:
         if decoder['_enabled']:
             # Iterate through the match keys
             match_fields = decoder["_match"]
+            matched = True
             for k in match_fields:
-                # Does this key exist in the message?
-                matched = True
-                if k in wxflow_msg:
-                    # Does the value match?
-                    if wxflow_msg[k] != match_fields[k]:
-                        matched = False
-                        break
+                # Does this key exist in the message, with the matching value?
+                if k not in wxflow_msg or wxflow_msg[k] != match_fields[k]:
+                    matched = False
+                    break
 
             if matched:
-                return decoder
+                matches.append(decoder)
 
-    return None
+    return matches
 
 def chords_auth_keys(wxflow_config):
     # Get the chords authentication parameters
@@ -157,7 +160,7 @@ def extractChords(decoder, auth_keys, wxflow_msg, test=False):
     # Create record 0
     i = 0
     # Inialize the dict with the authorization keys.
-    retval[i] = auth_keys
+    retval[i] = dict(auth_keys)
     retval[i]["inst_id"] = decoder["_chords_inst_id"]
     retval[i]["test"] = test
     retval[i]["vars"] = {}
@@ -185,7 +188,7 @@ def extractChords(decoder, auth_keys, wxflow_msg, test=False):
             retval.append({})
             i = len(retval) - 1
             # Inialize the dict with the authorization keys.
-            retval[i] = auth_keys
+            retval[i] = dict(auth_keys)
             retval[i]["test"] = test
             retval[i]["inst_id"] = decoder["_chords_inst_id"]
             retval[i]["vars"] = {}
@@ -222,14 +225,17 @@ def toChords(wxflow_config, wxflow_msg):
     else:
         test = False
 
-    # Look for a match. A decoder is returned, if true.
-    decoder = msgMatch(wxflow_decoders, wxflow_msg)
+    # Look for matches. A message may match more than one decoder.
+    decoders = msgMatch(wxflow_decoders, wxflow_msg)
 
-    # If we got a decoder, there is a message match.
-    if decoder:
-        # Break CHORDS stuff out of the message.
-        chords_values = extractChords(decoder=decoder, auth_keys=auth_keys, test=test,
-                                      wxflow_msg=wxflow_msg)
+    # Break CHORDS stuff out of the message for every matching decoder.
+    for decoder in decoders:
+        records = extractChords(decoder=decoder, auth_keys=auth_keys, test=test,
+                                 wxflow_msg=wxflow_msg)
+        if records:
+            if chords_values is None:
+                chords_values = []
+            chords_values.extend(records)
 
     return chords_values
 
