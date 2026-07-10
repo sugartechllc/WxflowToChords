@@ -1,6 +1,7 @@
 # WxflowToChords README
 
-This project provides a Python application for capturing the UDP packets that are emitted by a [WeatherFlow](weatherflow.com/tempest-weather-system/) Sky/Air or Tempest system hub, and transferring the data to a [CHORDS data server](chordsrt.com).
+This project provides a Python application for capturing the UDP packets that are emitted by a [WeatherFlow](http://weatherflow.com/tempest-weather-system/) Sky/Air or Tempest system hub, and transferring the data to a [CHORDS data server](http://chordsrt.com).
+
 ## Quickstart
 
 Note that the CHORDS system administrator must enable measurements, data downloading, and data viewing for the registered CHORDS user.
@@ -13,22 +14,22 @@ Set the following items in the configuration file:
 |Both   |"chords_host"|The IP name of the CHORDS server.|
 |Both   |"api_email"|The user login email for the CHORDS portal.|
 |Both   |"api_key"  |The user api_key for the CHORDS portal.|
-|Both   |HubStatus "serial_number"|change "HB_xxxxxxxx" to the correct Hub serial number.|
-|Both   |"_chords_inst_id"|The CHORDS instrument id for your WeatherFlow device. There will be multiple occurances of this identifier.|
-|Tempest|ObsTempest "serial_number"|change "ST_xxxxxxxx" to the correct Tempest serial number. There will be multiple occurances of this identifier.|
-|Air/Sky|ObsSky "serial_number"|change "SK_xxxxxxxx" to the correct Sky serial number. There will be multiple occurances of this identifier.|
-|AirSky|ObsTempest "serial_number"|change "AR_xxxxxxxx" to the correct Air serial number.|
+|Both   |HubStatus "serial_number"|change "HB-xxxxxxxx" to the correct Hub serial number.|
+|Both   |"_chords_inst_id"|The CHORDS instrument id for your WeatherFlow device. There will be multiple occurrences of this identifier. A single message type can be split across multiple instrument ids by defining more than one decoder with the same `_match`.|
+|Tempest|ObsTempest "serial_number"|change "ST-xxxxxxxx" to the correct Tempest serial number. There will be multiple occurrences of this identifier.|
+|Air/Sky|ObsSky "serial_number"|change "SK-xxxxxxxx" to the correct Sky serial number. There will be multiple occurrences of this identifier.|
+|Air/Sky|ObsAir "serial_number"|change "AR-xxxxxxxx" to the correct Air serial number.|
 
 Run _WxflowToChords_. The configuration file name is the single parameter:
 
-        python3 WxflowToChords wx.json
+        python3 WxflowToChords.py wx.json
 
 Of course, when you log off, the process will stop, so you may wish to run it it as:
 
-        nohup python3 WxflowToChords wx.json &
+        nohup python3 WxflowToChords.py wx.json &
 
 Any time the system is rebooted, you will need to restart WxflowToChords. You can get around this by
-setting up and enabling a service approprate for your operating system. A
+setting up and enabling a service appropriate for your operating system. A
 sample systemd service definition file is provided [here](linux/wxflowtochords.service).
 
 ## About
@@ -49,7 +50,7 @@ There are four python modules:
 * WxflowToChords: Strings all three modules together for the end-to-end process.
 
 Each module expects a configuration, provided in a JSON file. A single file can contain the
-configuration for all modules, or a file can be created for just the items needed for a gven module.
+configuration for all modules, or a file can be created for just the items needed for a given module.
 
 Each module will run a test case if it is invoked individually.
 
@@ -60,7 +61,7 @@ The code has been tested against python3 on MacOS and Raspbian Bullseye Lite.
 
 Input data is structured according to the Weatherflow 
 [UDP JSON schema](https://weatherflow.github.io/SmartWeather/api/udp.html).
-Messages have  a`type` field identifying the type of message,
+Messages have a `type` field identifying the type of message,
 status fields indicating identity and hardware health, 
 and in some cases an `obs` array containing the observed values, in a predefined order. 
 
@@ -109,6 +110,67 @@ For example:
 
 The WeatherFlow documentation seems to be in flux, so be sure to capture some datagrams
 to verify what they are transmitting.
+
+## Tempest Datagrams
+
+Here are a collection of datagrams from a Tempest:
+```json
+{
+  "serial_number": "HB-00219685",
+  "type": "hub_status",
+  "firmware_revision": "343",
+  "uptime": 5250,
+  "rssi": -54,
+  "timestamp": 1783656812,
+  "reset_flags": "POR",
+  "seq": 758,
+  "radio_stats": [29, 2, 0, 2, 19717],
+  "mqtt_stats": [0, 0],
+  "freq": 902000000,
+  "hw_version": 2,
+  "hardware_id": 2,
+  "cellular_status": -1,
+  "cell_rssi": -1
+}
+```
+
+```json
+{
+  "serial_number": "ST-00214782",
+  "type": "rapid_wind",
+  "hub_sn": "HB-00219685",
+  "ob": [1783656815, 0.93, 12]
+}
+```
+
+```json
+{
+  "serial_number": "ST-00214782",
+  "type": "device_status",
+  "hub_sn": "HB-00219685",
+  "timestamp": 1783656841,
+  "uptime": 4834,
+  "voltage": 2.410,
+  "firmware_revision": 193,
+  "rssi": -71,
+  "hub_rssi": -69,
+  "sensor_status": 0,
+  "debug": 1,
+  "sonic_fw": "2.0"
+}
+```
+
+```json
+{
+  "serial_number": "ST-00214782",
+  "type": "obs_st",
+  "hub_sn": "HB-00219685",
+  "obs": [
+    [1783656838, 0.41, 0.92, 1.52, 343, 3, 773.02, 16.70, 50.04, 0, 0.00, 0, 0.000000, 0, 0, 0, 2.410, 1]
+  ],
+  "firmware_revision": 193
+}
+```
 
 ## FromWxflow
 
@@ -209,13 +271,13 @@ the `at=` timestamp.
 
 ## ToChords
 
-This module takes the CHORDS data structure, reformats it as a URL, and sents it to a CHORDS instance as
-an http GET. There are two steps in this process, to bulid the URL and then submit it for transmission. This can be seen in 
+This module takes the CHORDS data structure, reformats it as a URL, and sends it to a CHORDS instance as
+an http GET. There are two steps in this process, to build the URL and then submit it for transmission. This can be seen in 
 `WxflowToChords`:
 
-```json
-  uri = ToChords.buildURI(host, chords_record)
-  ToChords.submitURI(uri)
+```python
+  uri = tochords.buildURI(host, chords_record)
+  tochords.submitURI(uri, max_queue)
 ```
 
 `ToChords` requires a JSON configuration file containing the host name for the CHORDS instance, and the access key
@@ -235,7 +297,15 @@ This module strings the three preceding ones together. It's the best place to se
 Example processing, showing the wxflow datagram followed by the CHORDS structured data:
 
 ```json
-{"serial_number":"HB-00004236","type":"hub_status","firmware_version":"26","uptime":88638,"rssi":-58,"timestamp":1511456148,"reset_flags":503316482}
+{
+  "serial_number": "HB-00004236",
+  "type": "hub_status",
+  "firmware_version": "26",
+  "uptime": 88638,
+  "rssi": -58,
+  "timestamp": 1511456148,
+  "reset_flags": 503316482
+}
 {
   "inst_id": "1",
   "skey": "123456",
@@ -244,7 +314,17 @@ Example processing, showing the wxflow datagram followed by the CHORDS structure
     "rssihub": -58
   }
 }
-{"serial_number":"AR-00005436","type":"station_status","hub_sn":"HB-00004236","timestamp":1511456154,"uptime":1825691,"voltage":3.46,"version":20,"rssi":-73,"sensor_status":4}
+{
+  "serial_number": "AR-00005436",
+  "type": "station_status",
+  "hub_sn": "HB-00004236",
+  "timestamp": 1511456154,
+  "uptime": 1825691,
+  "voltage": 3.46,
+  "version": 20,
+  "rssi": -73,
+  "sensor_status": 4
+}
 {
   "inst_id": "1",
   "skey": "123456",
@@ -255,7 +335,15 @@ Example processing, showing the wxflow datagram followed by the CHORDS structure
     "vair": 3.46
   }
 }
-{"serial_number":"AR-00005436","type":"obs_air","hub_sn":"HB-00004236","obs":[[1511456154,770.00,13.43,33,0,0,3.46,1]],"firmware_revision":20}
+{
+  "serial_number": "AR-00005436",
+  "type": "obs_air",
+  "hub_sn": "HB-00004236",
+  "obs": [
+    [1511456154, 770.00, 13.43, 33, 0, 0, 3.46, 1]
+  ],
+  "firmware_revision": 20
+}
 {
   "inst_id": "1",
   "skey": "123456",
@@ -297,7 +385,7 @@ This method is used to install Raspbian on a headless Raspberry Pi Zero W.
 I tried to get this working on a WiPy. It would run for indeterminate periods, and then throw
 OSError exceptions in the urequests code. After this, the networking would not work until after a reboot.
 So, I ripped out the WiPy specifics, and transfered the project to a Raspberry Pi Zero W. Here
-are a few thoings learned while working with the WiPy.
+are a few things learned while working with the WiPy.
 
 ### General
 
@@ -310,14 +398,14 @@ that doesn't mean that they will track the micropython.org releases.
 ### On macOS
 
 The goal is to have this running on a micropython embedded system. Fortunately, there is
-a micropython implmentation for Linux, macOS and Windows. This has been useful for testing
-the code apart from the embedded hardware. However, my experieince has been that the macOS
+a micropython implementation for Linux, macOS and Windows. This has been useful for testing
+the code apart from the embedded hardware. However, my experience has been that the macOS
 version is not bug-for-bug identical to the micropython board that I have been using (the
-[WiPy](https://pycom.io/hardware/wipy-3-0-specs/), and so this will only get you soo far.
+[WiPy](https://pycom.io/hardware/wipy-3-0-specs/), and so this will only get you so far.
 
 The general idea for bringing up micropython on macOS:
 
-```json
+```bash
 brew install libffi
 git clone --recurse https://github.com/micropython/micropython.git
 cd micropython/ports/unix
